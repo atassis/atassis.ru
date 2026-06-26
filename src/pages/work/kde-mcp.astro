@@ -1,0 +1,68 @@
+---
+import Base from '../../layouts/Base.astro';
+import VariantSwitcher from '../../components/VariantSwitcher';
+import StatStrip from '../../components/StatStrip.astro';
+import Verify from '../../components/Verify.astro';
+
+const stats: [string, string][] = [
+  ['language', 'Rust'],
+  ['target', 'KDE Plasma 6 / Wayland'],
+  ['drives apps via', 'a11y tree'],
+  ['safety', 'policy gate · ADR'],
+];
+
+const proof: [string, string?][] = [
+  ['github.com/atassis/kde-mcp', 'https://github.com/atassis/kde-mcp'],
+];
+---
+<Base title="kde-mcp — Taimuraz Kaitmazov" register="technical">
+  <VariantSwitcher client:load />
+  <main class="wrap">
+    <p class="back"><a href="/work">&larr; work</a></p>
+    <header class="lede">
+      <h1>kde-mcp &mdash; computer-use for the Linux desktop</h1>
+      <p class="muted">An MCP server that lets an agent actually drive a Linux (KDE Plasma 6 / Wayland) desktop &mdash; the kind of capability Anthropic ships for macOS and Windows, still rare on Linux. Built from scratch, solo, in Rust.</p>
+    </header>
+
+    <section class="lede">
+      <h2 class="label">The bar before me</h2>
+      <p>Computer-use tooling is mature on macOS and Windows and thin on Linux &mdash; and what exists tends to lean on pixel-level screenshots and coordinate clicks, which are brittle and unsafe (a moved window or a re-theme breaks them). Wayland&apos;s security model makes naive screen-scraping harder still.</p>
+    </section>
+
+    <section class="lede">
+      <h2 class="label">What I built</h2>
+      <p>kde-mcp drives applications through the accessibility tree &mdash; the same structured interface a screen reader uses &mdash; rather than by clicking pixels. The agent acts on named, typed elements, so actions are more reliable and far easier to reason about and gate. A safety policy layer sits in front of destructive actions, and the design decisions are written down as ADRs rather than living in my head.</p>
+    </section>
+
+    <StatStrip stats={stats} />
+
+    <section class="lede">
+      <h2 class="label">Verify</h2>
+      <p class="muted small">It&apos;s open source &mdash; read the code, the ADRs, and the safety policy:</p>
+      <Verify explain="Public repository — the accessibility-tree approach, the safety gate, and the ADRs are all in the open." proof={proof} />
+    </section>
+
+    <nav class="casenav">
+      <a href="/work/npu-engine">&larr; npu engine</a>
+      <a href="/work">all work &rarr;</a>
+    </nav>
+  </main>
+</Base>
+
+<style>
+  .wrap { max-width: 54rem; margin: 0 auto; padding: calc(var(--rhythm) * 1.2) 1.5rem calc(var(--rhythm) * 3); }
+  .lede { max-width: var(--measure-prose); }
+  .muted { color: var(--color-muted); }
+  .small { font-size: var(--text-sm); }
+  .back { font-family: var(--font-mono); font-size: var(--text-xs); margin: 0 0 var(--rhythm); }
+  h1 { font-family: var(--font-sans); font-weight: 700; font-size: var(--text-3xl); line-height: 1.1; margin: 0 0 calc(var(--rhythm) * 0.5); }
+  section { margin-bottom: calc(var(--rhythm) * 1.5); }
+  p { text-wrap: pretty; }
+  .label {
+    font-family: var(--font-mono); font-size: var(--text-sm); text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--color-accent);
+    border-bottom: 1px solid var(--color-rule); padding-bottom: calc(var(--rhythm) * 0.25);
+    margin: 0 0 var(--rhythm);
+  }
+  .casenav { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: var(--text-xs); border-top: 1px solid var(--color-rule); padding-top: var(--rhythm); margin-top: calc(var(--rhythm) * 2); }
+</style>
