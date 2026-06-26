@@ -1,0 +1,52 @@
+---
+import Base from '../layouts/Base.astro';
+import VariantSwitcher from '../components/VariantSwitcher';
+---
+<Base title="About — Taimuraz Kaitmazov" register="editorial">
+  <VariantSwitcher client:load />
+  <main class="wrap">
+    <header class="lede">
+      <h1>About</h1>
+    </header>
+
+    <section class="lede">
+      <p>I'm the person who builds the thing, not the one who sells it. Given an unfamiliar stack — a laptop NPU, a Wayland compositor, someone's accounting platform — my instinct is to go all the way down until I actually understand it, then build something correct on top.</p>
+    </section>
+
+    <section class="lede">
+      <h2 class="label">How I work</h2>
+      <p>AI does a lot of the typing now. My job is making sure it's actually right — checked against real benchmarks, labeled gold-sets, WER gates, byte-exact diffs — not just plausible output that reads well and falls over in production. The strongest version of that on this site is the verify signature: most claims open to their receipt, and where there's no public proof, I say so plainly instead of dressing it up.</p>
+    </section>
+
+    <section class="lede">
+      <h2 class="label">Availability</h2>
+      <p class="muted">Remote-first · open to relocation · Moscow (UTC+3)</p>
+      <p>
+        <a href="mailto:atassikay38@gmail.com">atassikay38@gmail.com</a>
+        <span class="muted"> · </span>
+        <a href="https://github.com/atassis">github.com/atassis</a>
+      </p>
+    </section>
+
+    <section class="lede">
+      <h2 class="label">Colophon</h2>
+      <p class="muted small">Built with Astro and self-hosted type (Source Serif 4, Inter, IBM Plex). No analytics, no CDN fonts. Every claim that can open to its receipt does — see <a href="/writing/why-this-site">why this site</a>.</p>
+    </section>
+  </main>
+</Base>
+
+<style>
+  .wrap { max-width: 54rem; margin: 0 auto; padding: calc(var(--rhythm) * 1.2) 1.5rem calc(var(--rhythm) * 3); }
+  .lede { max-width: var(--measure-prose); }
+  .muted { color: var(--color-muted); }
+  .small { font-size: var(--text-sm); }
+  h1 { font-family: var(--font-sans); font-weight: 700; font-size: var(--text-4xl); line-height: 1.08; margin: 0 0 var(--rhythm); }
+  section { margin-bottom: calc(var(--rhythm) * 1.5); }
+  p { text-wrap: pretty; }
+  .label {
+    font-family: var(--font-mono); font-size: var(--text-sm); text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--color-accent);
+    border-bottom: 1px solid var(--color-rule); padding-bottom: calc(var(--rhythm) * 0.25);
+    margin: 0 0 calc(var(--rhythm) * 0.75);
+  }
+</style>
