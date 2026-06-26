@@ -1,0 +1,103 @@
+---
+import Base from '../layouts/Base.astro';
+import GridOverlay from '../components/GridOverlay';
+import VariantSwitcher from '../components/VariantSwitcher';
+import TypeScale from '../components/TypeScale';
+
+const space = ['0.25rem', '0.5rem', '0.75rem', '1rem', '1.5rem', '2rem', '3rem', '4rem'];
+
+const h2 =
+  'font-family: var(--font-mono); font-size: var(--text-sm); text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-accent); border-bottom: 1px solid var(--color-rule); padding-bottom: calc(var(--rhythm)*0.25); margin: 0 0 var(--rhythm);';
+const sectionGap = 'margin-bottom: calc(var(--rhythm)*2);';
+---
+
+<Base title="lab — typography & grid" register="technical">
+  <VariantSwitcher client:load />
+  <GridOverlay client:load />
+
+  <div style="max-width: var(--grid-max); margin: 0 auto; padding: calc(var(--rhythm)*2.6) 1.5rem 6rem;">
+    <header style="margin-bottom: calc(var(--rhythm)*2);">
+      <p style="font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-muted); margin:0;">
+        atassis.ru · design system
+      </p>
+      <h1 style="font-family: var(--font-sans); font-weight: 700; font-size: var(--text-4xl); line-height: 1.08; margin: calc(var(--rhythm)*0.5) 0 0;">
+        Typography &amp; grid lab
+      </h1>
+      <p style="max-width: var(--measure-prose); color: var(--color-muted); margin: calc(var(--rhythm)*0.5) 0 0;">
+        Press <kbd>g</kbd> (or the button, bottom-right) to toggle the baseline + column grid.
+        Tell me &ldquo;tighter / looser / doesn&rsquo;t sit on the grid&rdquo; and I tune the tokens live &mdash; it reloads itself.
+      </p>
+    </header>
+
+    <section style={sectionGap}>
+      <h2 style={h2}>Type scale &middot; token &middot; rem &middot; px &mdash; read live per variant</h2>
+      <TypeScale client:load />
+    </section>
+
+    <section style={sectionGap}>
+      <h2 style={h2}>Prose at measure (~62ch)</h2>
+      <div style="max-width: var(--measure-prose);">
+        <h3 style="font-family: var(--font-sans); font-weight: 700; font-size: var(--text-2xl); line-height: 1.15; margin: 0 0 calc(var(--rhythm)*0.5);">
+          On-device NPU inference
+        </h3>
+        <p style="margin: 0 0 var(--rhythm); text-wrap: pretty;">
+          A from-scratch engine that runs whole model graphs natively on the laptop NPU, where the
+          prior open-source high-water mark was a single matmul. Body text sits on a 28px baseline;
+          paragraphs are whole multiples of the rhythm unit so the column stays on the grid.
+        </p>
+        <p style="margin: 0; text-wrap: pretty;">
+          A second paragraph to check inter-paragraph rhythm and the measure: lines should break
+          around 62 characters, the comfortable reading zone for sustained prose.
+        </p>
+      </div>
+    </section>
+
+    <section style={sectionGap}>
+      <h2 style={h2}>Verse at measure (~46ch) &middot; placeholder</h2>
+      <div style="max-width: var(--measure-verse); font-family: 'Source Serif 4', Georgia, serif; font-size: var(--text-lg); line-height: var(--rhythm);">
+        <p style="margin: 0; hanging-punctuation: first;">
+          Люблю грозу в начале мая,<br />
+          Когда весенний, первый гром,<br />
+          как бы резвяся и играя,<br />
+          Грохочет в небе голубом.
+        </p>
+        <p style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-muted); margin: calc(var(--rhythm)*0.5) 0 0;">
+          placeholder — public-domain (Тютчев); verse is always serif. Swap for your own.
+        </p>
+      </div>
+    </section>
+
+    <section style={sectionGap}>
+      <h2 style={h2}>Work entry &middot; ledger margin + verify</h2>
+      <div style="display:grid; grid-template-columns: 1fr 15rem; gap: var(--col-gap); align-items: start; max-width: 56rem;">
+        <div>
+          <h3 style="font-family: var(--font-sans); font-weight: 700; font-size: var(--text-xl); margin: 0 0 calc(var(--rhythm)*0.5);">
+            AMD Ryzen AI NPU toolchain
+          </h3>
+          <p style="margin: 0; text-wrap: pretty;">
+            Merged compiler &amp; operator fixes so it scales to large designs &mdash; eliminated the
+            O(n&sup2;) build walls, with byte-identical output.
+          </p>
+        </div>
+        <aside style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-muted); line-height: calc(var(--rhythm)*0.85);">
+          <div style="color: var(--color-accent);">&check; verified</div>
+          <div>mlir-aie #3178 &middot; merged</div>
+          <div>amd/IRON #123 &middot; merged</div>
+          <div>&minus;58% aiecc wall</div>
+        </aside>
+      </div>
+    </section>
+
+    <section>
+      <h2 style={h2}>Spacing scale &middot; base 4px</h2>
+      <div style="display:flex; flex-wrap: wrap; gap: 1.5rem; align-items: flex-end;">
+        {space.map((s) => (
+          <div style="text-align:center;">
+            <div style={`width:${s}; height:${s}; background: var(--color-accent); margin: 0 auto;`}></div>
+            <code style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-muted);">{s}</code>
+          </div>
+        ))}
+      </div>
+    </section>
+  </div>
+</Base>

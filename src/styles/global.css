@@ -1,0 +1,86 @@
+@import "tailwindcss";
+
+/* ----- design tokens (the system) ----- */
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", monospace;
+  --font-serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+
+  /* type scale — base 1rem (= 18px root), ratio 1.2 (minor third) */
+  --text-xs: 0.694rem;
+  --text-sm: 0.833rem;
+  --text-base: 1rem;
+  --text-lg: 1.2rem;
+  --text-xl: 1.44rem;
+  --text-2xl: 1.728rem;
+  --text-3xl: 2.074rem;
+  --text-4xl: 2.488rem;
+
+  /* colour — warm-paper editorial */
+  --color-paper: #faf8f3;
+  --color-ink: #1a1a18;
+  --color-muted: #6b6862;
+  --color-rule: #e3ded3;
+  --color-accent: #b5562e; /* Ossetian earth / oxblood */
+}
+
+/* non-namespaced system vars (available everywhere, no utility generated) */
+:root {
+  --rhythm: 1.556rem;       /* 28px @ 18px root — the vertical baseline unit */
+  --measure-prose: 62ch;
+  --measure-verse: 46ch;
+  --col-gap: 1.5rem;
+  --grid-max: 72rem;
+}
+
+html { font-size: 18px; }
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-serif);
+  line-height: var(--rhythm);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+a { color: var(--color-accent); }
+kbd {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  border: 1px solid var(--color-rule);
+  border-radius: 3px;
+  padding: 0.05em 0.35em;
+}
+
+/* =====================================================================
+   VARIANTS — switchable design "personalities" (data-variant on <html>)
+   A (Calm) is the :root default above.
+   ===================================================================== */
+
+/* (H retired — technical register now uses D below) */
+
+/* D — Systems: IBM Plex Sans body + mono headings, ratio 1.2, base 17px */
+html[data-variant="d"] { font-size: 17px; }
+html[data-variant="d"] {
+  --font-serif: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "IBM Plex Mono", ui-monospace, monospace;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+  --text-xs: 0.694rem;  --text-sm: 0.833rem; --text-base: 1rem;
+  --text-lg: 1.2rem;    --text-xl: 1.44rem;  --text-2xl: 1.728rem;
+  --text-3xl: 2.074rem; --text-4xl: 2.488rem;
+  --rhythm: 1.5rem;
+  --color-paper: #faf8f3; --color-ink: #1a1a18; --color-muted: #6b6862;
+  --color-rule: #e3ded3; --color-accent: #b5562e;
+  --measure-prose: 64ch; --measure-verse: 46ch;
+}
+
+/* ===== DARK THEME — composes with any personality; warm, not OLED-black ===== */
+html[data-theme="dark"] {
+  --color-paper: #17150f;
+  --color-ink: #ece6da;
+  --color-muted: #9a9387;
+  --color-rule: #332f26;
+  --color-accent: #d77a4c;
+  color-scheme: dark;
+}

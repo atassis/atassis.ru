@@ -1,0 +1,21 @@
+{
+  "name": "atassis-site",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "astro": "^5",
+    "@astrojs/preact": "^4",
+    "preact": "^10",
+    "tailwindcss": "^4",
+    "@tailwindcss/vite": "^4"
+  },
+  "devDependencies": {
+    "typescript": "^5"
+  }
+}

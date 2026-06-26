@@ -1,0 +1,256 @@
+---
+import Base from '../layouts/Base.astro';
+import VariantSwitcher from '../components/VariantSwitcher';
+
+// [verify] only where a real receipt exists. No public proof → honest status tag, never a verify button.
+const crowns = [
+  {
+    claim: 'Built a from-scratch on-device NPU inference engine — 16 models on Linux where AMD’s own stack offloads zero ops, at ~half the CPU’s power. Making it compile at scale meant fixing AMD’s open compiler & operators upstream.',
+    explain: 'The engine repo isn’t public yet — but open the merged PRs: that’s the public, third-party-accepted evidence of the compiler/operator work it required.',
+    proof: [
+      ['mlir-aie #3178', 'https://github.com/Xilinx/mlir-aie/pull/3178'],
+      ['amd/IRON #123', 'https://github.com/amd/IRON/pull/123'],
+    ],
+    status: null,
+  },
+  {
+    claim: 'Fixes merged upstream in Zed and helm-diff; an open speculative-decoding PR to vLLM.',
+    explain: 'Zed & helm-diff read “Merged”; the vLLM PR is open — third parties accepted (or are reviewing) the code, not me.',
+    proof: [
+      ['zed #13840', 'https://github.com/zed-industries/zed/pull/13840'],
+      ['helm-diff #294', 'https://github.com/databus23/helm-diff/pull/294'],
+      ['vllm #44698', 'https://github.com/vllm-project/vllm/pull/44698'],
+    ],
+    status: null,
+  },
+  {
+    claim: 'Production AI for a top-3 B2B accounting-software publisher: a payroll-compliance agent, a self-hosted OCR→LLM extraction pipeline (chosen on a labeled gold-set), vLLM-on-H100.',
+    explain: null,
+    proof: [],
+    status: 'private',
+  },
+];
+
+const repos = [
+  ['kde-mcp', 'https://github.com/atassis/kde-mcp', 'computer-use MCP server for the Linux desktop (KDE/Wayland) — accessibility-tree-first, not pixel-clicks.'],
+  ['tnl', 'https://github.com/atassis/tnl', 'self-hosted ngrok alternative: one-command reverse tunnels behind your own Caddy.'],
+  ['evbridge', 'https://github.com/atassis/evbridge', 'evdev→Wayland input bridge for headless / nested compositors.'],
+  ['run-script-webpack-plugin', 'https://github.com/atassis/run-script-webpack-plugin', 'in NestJS’ official HMR docs; ~600K npm downloads/mo.'],
+  ['rethinkdb-ts', 'https://github.com/rethinkdb/rethinkdb-ts', 'top contributor (~63% of commits, 9+ merged PRs incl. releases).'],
+];
+---
+
+<Base title="Taimuraz Kaitmazov — AI Platform & Systems Engineer">
+  <VariantSwitcher client:load />
+
+  <main class="wrap">
+    <header class="lede">
+      <h1>Taimuraz Kaitmazov</h1>
+      <p class="tagline">
+        I build deep, correct systems across unfamiliar stacks &mdash; AI platform, on-device NPU
+        inference, backend, Linux internals.
+      </p>
+      <p class="muted lede-sub">
+        AI does a lot of the typing; my job is making sure it&rsquo;s actually right &mdash; verified
+        against real benchmarks, gold-sets, and byte-exact diffs, not just plausible output.
+      </p>
+    </header>
+
+    <section class="grid">
+      <h2 class="label">Lately</h2>
+      <p class="hint">Claims with a public receipt open to it &mdash; click <span class="kbdish">&#9656; verify</span>, or press <kbd>v</kbd> for all.</p>
+      {crowns.map((c) => (
+        <div class="crown">
+          <p class="crown__claim">{c.claim}</p>
+          <div class="crown__verify">
+            {c.proof.length > 0 ? (
+              <>
+                <button class="verify-btn" type="button" aria-expanded="false">&#9656; verify</button>
+                <div class="verify-panel">
+                  <p class="verify-explain">{c.explain}</p>
+                  <p class="verify-proof">
+                    <span class="ok">&check;</span>{' '}
+                    {c.proof.map((p, k) => (
+                      <>
+                        {k > 0 && ' · '}
+                        {p[1] ? <a href={p[1]}>{p[0]}</a> : <span>{p[0]}</span>}
+                      </>
+                    ))}
+                  </p>
+                </div>
+              </>
+            ) : (
+              <span class="status">{c.status}</span>
+            )}
+          </div>
+        </div>
+      ))}
+    </section>
+
+    <section class="grid">
+      <h2 class="label">Open source</h2>
+      {repos.map(([name, url, desc]) => (
+        <p class="repo">
+          <a class="repo__name" href={url}>{name}</a>
+          <span class="muted"> &mdash; {desc}</span>
+        </p>
+      ))}
+    </section>
+
+    <section class="lede">
+      <h2 class="label">Contact</h2>
+      <p>
+        <a href="mailto:atassikay38@gmail.com">atassikay38@gmail.com</a>
+        <span class="muted"> &middot; </span>
+        <a href="https://github.com/atassis">github.com/atassis</a>
+      </p>
+      <p class="muted small">Remote-first &middot; open to relocation &middot; Moscow (UTC+3)</p>
+    </section>
+  </main>
+</Base>
+
+<script>
+  function setCrown(crown, open) {
+    crown.classList.toggle('is-open', open);
+    const btn = crown.querySelector('.verify-btn');
+    if (btn) {
+      btn.setAttribute('aria-expanded', String(open));
+      btn.textContent = open ? '▾ verified · hide' : '▸ verify';
+    }
+  }
+  if (!window.__verifyWired) {
+    window.__verifyWired = true;
+    document.addEventListener('click', (e) => {
+      const btn = e.target && e.target.closest && e.target.closest('.verify-btn');
+      if (!btn) return;
+      const crown = btn.closest('.crown');
+      if (crown) setCrown(crown, !crown.classList.contains('is-open'));
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'v') return;
+      const t = e.target;
+      if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+      const crowns = Array.from(document.querySelectorAll('.crown')).filter((c) => c.querySelector('.verify-btn'));
+      if (!crowns.length) return;
+      const anyClosed = crowns.some((c) => !c.classList.contains('is-open'));
+      crowns.forEach((c) => setCrown(c, anyClosed));
+    });
+  }
+</script>
+
+<style>
+  .wrap {
+    max-width: 60rem;
+    margin: 0 auto;
+    padding: calc(var(--rhythm) * 2.6) 1.5rem calc(var(--rhythm) * 3);
+  }
+  .lede { max-width: var(--measure-prose); }
+  .muted { color: var(--color-muted); }
+  .small { font-size: var(--text-sm); }
+
+  h1 {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: var(--text-4xl);
+    line-height: 1.08;
+    margin: 0;
+  }
+  .tagline { font-size: var(--text-lg); margin: var(--rhythm) 0 0; }
+  .lede-sub { margin: calc(var(--rhythm) * 0.5) 0 0; }
+
+  section { margin-bottom: calc(var(--rhythm) * 2); }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: 1.5rem;
+  }
+  .label {
+    grid-column: 1 / -1;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-accent);
+    border-bottom: 1px solid var(--color-rule);
+    padding-bottom: calc(var(--rhythm) * 0.25);
+    margin: 0 0 calc(var(--rhythm) * 0.5);
+  }
+  .hint {
+    grid-column: 1 / -1;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-muted);
+    margin: 0 0 var(--rhythm);
+  }
+  .kbdish { color: var(--color-accent); }
+
+  .crown {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: 1.5rem;
+    align-items: start;
+    margin-bottom: var(--rhythm);
+  }
+  .crown__claim { grid-column: 1 / 9; margin: 0; text-wrap: pretty; }
+  .crown__verify { grid-column: 9 / 13; }
+
+  .verify-btn {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-accent);
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+  .verify-btn:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+  .status {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-muted);
+    opacity: 0.7;
+  }
+
+  .verify-panel {
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.25s ease, opacity 0.2s ease;
+  }
+  .crown.is-open .verify-panel {
+    max-height: 14rem;
+    opacity: 1;
+    margin-top: calc(var(--rhythm) * 0.35);
+  }
+  .verify-explain {
+    margin: 0;
+    font-size: var(--text-xs);
+    color: var(--color-muted);
+    line-height: calc(var(--rhythm) * 0.85);
+  }
+  .verify-proof {
+    margin: calc(var(--rhythm) * 0.3) 0 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    line-height: calc(var(--rhythm) * 0.85);
+  }
+  .ok { color: var(--color-accent); }
+
+  .repo { grid-column: span 6; margin: 0 0 calc(var(--rhythm) * 0.5); }
+  .repo__name { font-family: var(--font-mono); font-size: var(--text-sm); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .verify-panel { transition: none; }
+  }
+
+  @media (max-width: 820px) {
+    .crown { grid-template-columns: 1fr; }
+    .crown__claim,
+    .crown__verify { grid-column: 1 / -1; }
+    .crown__verify { margin-top: calc(var(--rhythm) * 0.25); }
+    .repo { grid-column: 1 / -1; }
+  }
+</style>
