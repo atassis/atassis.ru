@@ -1,0 +1,136 @@
+---
+import Base from '../layouts/Base.astro';
+import VariantSwitcher from '../components/VariantSwitcher';
+
+const projects = [
+  {
+    title: 'On-device NPU inference engine — AMD Ryzen AI (XDNA2), Linux',
+    body: 'From-scratch engine running whole model graphs natively on the laptop NPU via the open MLIR-AIE / IRON stack — where the prior open-source high-water mark was a single matmul at ~0.6% utilization and AMD’s own Linux stack offloads zero ops. 16 models across 11 architectures (BERT · Whisper/Parakeet/GigaAM · ViT/DINOv2/ResNet-18/CLIP · ESM-2), parity ~4e-3. Core: fuses a 12-layer decode into one NPU dispatch (72→1 per token), weights + KV resident. −29% energy / ~half the package power vs CPU at equal accuracy (WER 0.117). Making it compile at scale meant fixing AMD’s compiler & operators upstream.',
+    meta: 'MLIR-AIE · IRON · Peano · XRT · Rust · sole architect',
+    proof: [['mlir-aie #3178', 'https://github.com/Xilinx/mlir-aie/pull/3178'], ['amd/IRON #123', 'https://github.com/amd/IRON/pull/123']],
+  },
+  {
+    title: 'AI payroll-compliance agent over 1С:ZUP',
+    body: 'For a top-3 Russian B2B accounting-software publisher. Daily-reconciliation AI agent on the dominant Russian payroll/ERP platform + a Go/Rust MCP server; 30+ validation-rule registry, tax/labor-regulation cross-references, on-premise connector. Closed-beta with real client accountants surfaced specific compliance discrepancies in 10+-year ERP legacy.',
+    meta: 'Go · Rust · Anthropic SDK · sole architect · closed beta',
+    proof: [],
+  },
+  {
+    title: 'Document-intelligence pipeline for accounting primaries',
+    body: 'Self-hosted OCR → LLM extraction of structured fields from Russian accounting primaries, PII kept on-premise (dots.ocr on H100 + an LLM extraction stage). Built a gold-set, a human-in-the-loop labeler and a scorer, then benchmarked OCR→LLM architectures on it — quantifying the privacy-vs-accuracy tradeoff to choose the production design on ground truth, not impression.',
+    meta: 'vLLM · H100 · FastAPI · sole engineer · production',
+    proof: [],
+  },
+  {
+    title: 'kde-mcp — computer-use MCP for the Linux desktop',
+    body: 'The kind of tool Anthropic’s computer-use covers for macOS/Windows, still rare on Linux/Wayland — built from scratch, solo. Drives apps through the accessibility tree (like a screen reader) rather than pixel-clicks: more reliable and safer. Safety policy gate, ADR-documented.',
+    meta: 'Rust · KDE Plasma 6 / Wayland · open-source',
+    proof: [['github.com/atassis/kde-mcp', 'https://github.com/atassis/kde-mcp']],
+  },
+  {
+    title: 'Multi-tenant medical SaaS — OCR + LLM PII depersonalization',
+    body: 'Local PaddleOCR-VL + Presidio + LLM-based PII detection for Russian PII (SNILS / INN / passport) with bounding boxes; per-tenant isolation (nginx routing) + a ClickHouse dedup buffer in front of Postgres.',
+    meta: 'PaddleOCR-VL · Presidio · Werf/Helm/K8s · designer & lead',
+    proof: [],
+  },
+  {
+    title: 'Three-language MCP server stack for 1С',
+    body: 'Coordinated Go + Rust + TypeScript/Bun stack exposing 1С enterprise data to agents over MCP, behind a unified backend-neutral query abstraction with pluggable backends. 15+ MCP tools.',
+    meta: 'Go · Rust · TS/Bun · sole architect · private',
+    proof: [],
+  },
+];
+
+const experience = [
+  ['2025 — now', 'Independent · Tech Lead, AI Platform', 'Long-running contract with a top-3 Russian B2B accounting publisher (1С AI agent, OCR + LLM pipelines, vLLM-on-H100) + own R&D (kde-mcp, the NPU engine).'],
+  ['2024 — 2025', 'Buildmate (US startup) · Lead Engineer', 'Construction project-management marketplace to production-ready MVP; ~80% of the codebase (backend, React, Helm/K8s + AWS); led a developer, mentored the designer.'],
+  ['2024 — 2025', 'Shopmate (US startup) · Scraping team lead', 'Led a team of 4. Kubernetes scraping for 20+ US retail sources; Kafka + Protobuf streaming, >1M messages/day.'],
+  ['2020 — 2024', 'Deeplay · TypeScript team lead', 'Led a team of up to 4 on a high-throughput data-aggregation service; 99% uptime; ClickHouse-optimized storage up to 10M records/day.'],
+  ['2018 — 2020', 'Overgear · Senior fullstack / Tech Lead', 'Led a team of up to 5. TypeScript adoption, payment-system integration, a frontend design system, monitoring/analytics.'],
+  ['2017 — 2018', 'Biletix · Backend developer', 'Service rewrite to Docker + stateless; database optimization.'],
+];
+---
+
+<Base title="Work — Taimuraz Kaitmazov" register="technical">
+  <VariantSwitcher client:load />
+
+  <main class="wrap">
+    <header class="lede">
+      <h1>Work</h1>
+      <p class="muted">Selected projects and roles. The home page shows the headline claims with their receipts; this is the longer record.</p>
+    </header>
+
+    <section>
+      <h2 class="label">Selected projects</h2>
+      {projects.map((p) => (
+        <article class="proj">
+          <h3 class="proj__title">{p.title}</h3>
+          <p class="proj__body">{p.body}</p>
+          <p class="proj__meta">
+            {p.meta}
+            {p.proof.length > 0 && (
+              <>
+                {' · '}
+                {p.proof.map((pr, i) => (
+                  <>
+                    {i > 0 && ' · '}
+                    <a href={pr[1]}>{pr[0]}</a>
+                  </>
+                ))}
+              </>
+            )}
+          </p>
+        </article>
+      ))}
+    </section>
+
+    <section>
+      <h2 class="label">Experience</h2>
+      {experience.map(([when, role, note]) => (
+        <div class="xp">
+          <p class="xp__when">{when}</p>
+          <div class="xp__body">
+            <p class="xp__role">{role}</p>
+            <p class="muted xp__note">{note}</p>
+          </div>
+        </div>
+      ))}
+    </section>
+
+    <section class="lede">
+      <h2 class="label">More</h2>
+      <p class="muted">Full CV on request · <a href="https://github.com/atassis">github.com/atassis</a> · <a href="/">home</a></p>
+    </section>
+  </main>
+</Base>
+
+<style>
+  .wrap { max-width: 54rem; margin: 0 auto; padding: calc(var(--rhythm) * 1.2) 1.5rem calc(var(--rhythm) * 3); }
+  .lede { max-width: var(--measure-prose); }
+  .muted { color: var(--color-muted); }
+  h1 { font-family: var(--font-sans); font-weight: 700; font-size: var(--text-4xl); line-height: 1.08; margin: 0 0 calc(var(--rhythm) * 0.5); }
+
+  section { margin-bottom: calc(var(--rhythm) * 2); }
+  .label {
+    font-family: var(--font-mono); font-size: var(--text-sm); text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--color-accent);
+    border-bottom: 1px solid var(--color-rule); padding-bottom: calc(var(--rhythm) * 0.25);
+    margin: 0 0 var(--rhythm);
+  }
+
+  .proj { max-width: var(--measure-prose); margin: 0 0 calc(var(--rhythm) * 1.25); }
+  .proj__title { font-family: var(--font-sans); font-weight: 700; font-size: var(--text-lg); margin: 0 0 calc(var(--rhythm) * 0.25); }
+  .proj__body { margin: 0; text-wrap: pretty; }
+  .proj__meta { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-muted); margin: calc(var(--rhythm) * 0.3) 0 0; }
+
+  .xp { display: grid; grid-template-columns: 8rem 1fr; gap: 0 1.5rem; margin-bottom: var(--rhythm); align-items: baseline; }
+  .xp__when { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-muted); margin: 0; }
+  .xp__body { max-width: var(--measure-prose); }
+  .xp__role { font-weight: 600; margin: 0; }
+  .xp__note { margin: calc(var(--rhythm) * 0.2) 0 0; }
+
+  @media (max-width: 720px) {
+    .xp { grid-template-columns: 1fr; gap: 0; }
+    .xp__when { margin-bottom: calc(var(--rhythm) * 0.15); }
+  }
+</style>

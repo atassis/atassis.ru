@@ -33,7 +33,7 @@ export default function GridOverlay() {
           cursor: 'pointer',
         }}
       >
-        grid: {on ? 'on' : 'off'} · g
+        grid: {on ? 'on' : 'off'} <span class="k">g</span>
       </button>
 
       {on && (
