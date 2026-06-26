@@ -1,0 +1,76 @@
+---
+import Base from '../../layouts/Base.astro';
+import VariantSwitcher from '../../components/VariantSwitcher';
+import StatStrip from '../../components/StatStrip.astro';
+import Verify from '../../components/Verify.astro';
+
+const stats: [string, string][] = [
+  ['models', '16 / 11 archs'],
+  ['dispatch per token', '72 → 1'],
+  ['energy vs CPU', '−29%'],
+  ['accuracy', 'WER 0.117'],
+  ['numerical parity', '~4e-3'],
+  ['prior OSS high-water', '~0.6% util'],
+];
+
+const proof: [string, string?][] = [
+  ['mlir-aie #3178', 'https://github.com/Xilinx/mlir-aie/pull/3178'],
+  ['amd/IRON #123', 'https://github.com/amd/IRON/pull/123'],
+];
+---
+<Base title="NPU inference engine — Taimuraz Kaitmazov" register="technical">
+  <VariantSwitcher client:load />
+  <main class="wrap">
+    <p class="back"><a href="/work">← work</a></p>
+    <header class="lede">
+      <h1>On-device NPU inference engine</h1>
+      <p class="muted">AMD Ryzen AI (XDNA2), Linux. A from-scratch engine running whole model graphs natively on the laptop NPU — at roughly half the CPU's package power.</p>
+    </header>
+
+    <section class="lede">
+      <h2 class="label">The bar before me</h2>
+      <p>On Linux, the open-source high-water mark for this NPU was a single matmul at ~0.6% utilization, and AMD's own Linux stack offloads zero ops to it. Running real model graphs — transformers, ASR, vision, protein models — natively on the part, end to end, was simply not a thing that existed.</p>
+    </section>
+
+    <section class="lede">
+      <h2 class="label">What I built</h2>
+      <p>An inference engine on the open MLIR-AIE / IRON stack that compiles and runs 16 models across 11 architectures natively on the NPU — BERT · Whisper / Parakeet / GigaAM · ViT / DINOv2 / ResNet-18 / CLIP · ESM-2 — at numerical parity ~4e-3 against the reference implementations.</p>
+      <p>The core trick is collapsing a 12-layer transformer decode into a single NPU dispatch — 72 dispatches per token down to 1 — with weights and the KV cache resident on the device, so each token isn't paying host round-trip and re-upload costs. Making the compiler survive graphs this size meant fixing AMD's compiler and operators upstream (an O(n²) pass cut to linear, ~58% off aiecc, byte-identical output preserved).</p>
+    </section>
+
+    <StatStrip stats={stats} />
+
+    <section class="lede">
+      <p>At equal accuracy (WER 0.117 on speech), the engine runs at −29% energy and roughly half the package power of the same workload on the CPU — the point of an NPU, finally realized on this Linux stack.</p>
+    </section>
+
+    <section class="lede">
+      <h2 class="label">Verify</h2>
+      <p class="muted small">The engine itself isn't public yet (AGPL, in progress) — but the compiler/operator work it required is, and it's third-party-merged. Open the receipts:</p>
+      <Verify explain={`Both PRs read "Merged" in AMD's own repos — the compiler/operator fixes the engine needed at scale, accepted by the maintainers, not by me.`} proof={proof} />
+    </section>
+
+    <nav class="casenav">
+      <a href="/work">← all work</a>
+      <a href="/work/kde-mcp">kde-mcp →</a>
+    </nav>
+  </main>
+</Base>
+
+<style>
+  .wrap { max-width: 54rem; margin: 0 auto; padding: calc(var(--rhythm) * 1.2) 1.5rem calc(var(--rhythm) * 3); }
+  .lede { max-width: var(--measure-prose); }
+  .muted { color: var(--color-muted); }
+  .small { font-size: var(--text-sm); }
+  .back { font-family: var(--font-mono); font-size: var(--text-xs); margin: 0 0 var(--rhythm); }
+  h1 { font-family: var(--font-sans); font-weight: 700; font-size: var(--text-3xl); line-height: 1.1; margin: 0 0 calc(var(--rhythm) * 0.5); }
+  section { margin-bottom: calc(var(--rhythm) * 1.5); }
+  p { text-wrap: pretty; }
+  .label {
+    font-family: var(--font-mono); font-size: var(--text-sm); text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--color-accent);
+    border-bottom: 1px solid var(--color-rule); padding-bottom: calc(var(--rhythm) * 0.25);
+    margin: 0 0 var(--rhythm);
+  }
+  .casenav { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: var(--text-xs); border-top: 1px solid var(--color-rule); padding-top: var(--rhythm); margin-top: calc(var(--rhythm) * 2); }
+</style>
