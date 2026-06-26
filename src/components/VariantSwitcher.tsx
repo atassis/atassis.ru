@@ -68,13 +68,17 @@ export default function VariantSwitcher() {
         fontFamily: 'var(--font-mono)', fontSize: '0.72rem',
       }}
     >
-      <span style={{ opacity: 0.55, marginRight: '0.2rem' }}>preview:</span>
-      {VARIANTS.map((x, i) => (
-        <button key={x.id} onClick={() => applyVariant(x.id)} title={x.desc} style={btn(v === x.id)}>
-          <span style={{ opacity: 0.55 }}>{i + 1}</span> {x.label}
-        </button>
-      ))}
-      <span style={{ width: '1px', height: '1.1rem', background: 'var(--color-rule)', margin: '0 0.3rem' }} />
+      {import.meta.env.DEV && (
+        <>
+          <span style={{ opacity: 0.55, marginRight: '0.2rem' }}>preview:</span>
+          {VARIANTS.map((x, i) => (
+            <button key={x.id} onClick={() => applyVariant(x.id)} title={x.desc} style={btn(v === x.id)}>
+              <span style={{ opacity: 0.55 }}>{i + 1}</span> {x.label}
+            </button>
+          ))}
+          <span style={{ width: '1px', height: '1.1rem', background: 'var(--color-rule)', margin: '0 0.3rem' }} />
+        </>
+      )}
       <button onClick={() => applyTheme(!dark)} title="toggle theme (m)" style={btn(dark)}>
         {dark ? '☀ light' : '☾ dark'}
       </button>
