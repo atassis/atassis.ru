@@ -8,6 +8,7 @@ const projects = [
     body: 'From-scratch engine running whole model graphs natively on the laptop NPU via the open MLIR-AIE / IRON stack — where the prior open-source high-water mark was a single matmul at ~0.6% utilization and AMD’s own Linux stack offloads zero ops. 16 models across 11 architectures (BERT · Whisper/Parakeet/GigaAM · ViT/DINOv2/ResNet-18/CLIP · ESM-2), parity ~4e-3. Core: fuses a 12-layer decode into one NPU dispatch (72→1 per token), weights + KV resident. −29% energy / ~half the package power vs CPU at equal accuracy (WER 0.117). Making it compile at scale meant fixing AMD’s compiler & operators upstream.',
     meta: 'MLIR-AIE · IRON · Peano · XRT · Rust · sole architect',
     proof: [['mlir-aie #3178', 'https://github.com/Xilinx/mlir-aie/pull/3178'], ['amd/IRON #123', 'https://github.com/amd/IRON/pull/123']],
+    caseLink: '/work/npu-engine',
   },
   {
     title: 'AI payroll-compliance agent over 1С:ZUP',
@@ -26,6 +27,7 @@ const projects = [
     body: 'The kind of tool Anthropic’s computer-use covers for macOS/Windows, still rare on Linux/Wayland — built from scratch, solo. Drives apps through the accessibility tree (like a screen reader) rather than pixel-clicks: more reliable and safer. Safety policy gate, ADR-documented.',
     meta: 'Rust · KDE Plasma 6 / Wayland · open-source',
     proof: [['github.com/atassis/kde-mcp', 'https://github.com/atassis/kde-mcp']],
+    caseLink: '/work/kde-mcp',
   },
   {
     title: 'Multi-tenant medical SaaS — OCR + LLM PII depersonalization',
@@ -48,6 +50,35 @@ const experience = [
   ['2020 — 2024', 'Deeplay · TypeScript team lead', 'Led a team of up to 4 on a high-throughput data-aggregation service; 99% uptime; ClickHouse-optimized storage up to 10M records/day.'],
   ['2018 — 2020', 'Overgear · Senior fullstack / Tech Lead', 'Led a team of up to 5. TypeScript adoption, payment-system integration, a frontend design system, monitoring/analytics.'],
   ['2017 — 2018', 'Biletix · Backend developer', 'Service rewrite to Docker + stateless; database optimization.'],
+];
+
+const skills: [string, [string, string?][]][] = [
+  ['Languages', [
+    ['Rust → kde-mcp', '/work/kde-mcp'],
+    ['Rust → tnl', 'https://github.com/atassis/tnl'],
+    ['Rust → NPU engine', '/work/npu-engine'],
+    ['Go → 1С MCP server'],
+    ['TypeScript → rethinkdb-ts', 'https://github.com/rethinkdb/rethinkdb-ts'],
+    ['TypeScript → run-script-webpack-plugin', 'https://github.com/atassis/run-script-webpack-plugin'],
+    ['Python → vLLM / OCR pipelines'],
+  ]],
+  ['Systems / infra', [
+    ['Kubernetes · Helm → helm-diff #294', 'https://github.com/databus23/helm-diff/pull/294'],
+    ['vLLM on H100'],
+    ['ClickHouse'],
+    ['MLIR / compiler internals → mlir-aie #3178', 'https://github.com/Xilinx/mlir-aie/pull/3178'],
+  ]],
+  ['AI / ML', [
+    ['on-device NPU inference → NPU engine', '/work/npu-engine'],
+    ['LLM agents / MCP → kde-mcp', '/work/kde-mcp'],
+    ['speculative decoding → vllm #44698', 'https://github.com/vllm-project/vllm/pull/44698'],
+    ['OCR → LLM gold-set methodology'],
+  ]],
+  ['Linux desktop', [
+    ['Wayland / KDE internals → kde-mcp', '/work/kde-mcp'],
+    ['evdev → Wayland input → evbridge', 'https://github.com/atassis/evbridge'],
+    ['accessibility-tree automation'],
+  ]],
 ];
 ---
 
@@ -79,6 +110,7 @@ const experience = [
                 ))}
               </>
             )}
+            {p.caseLink && <> &middot; <a href={p.caseLink}>read the case &#x2192;</a></>}
           </p>
         </article>
       ))}
@@ -93,6 +125,24 @@ const experience = [
             <p class="xp__role">{role}</p>
             <p class="muted xp__note">{note}</p>
           </div>
+        </div>
+      ))}
+    </section>
+
+    <section>
+      <h2 class="label">Skills — each links to its receipt</h2>
+      <p class="skills-hint muted">Not a self-rated cloud. Where a claim has a public proof, it links to it; where it doesn't, it's plain text — same honesty as the private tags above.</p>
+      {skills.map(([group, items]) => (
+        <div class="skillrow">
+          <p class="skillrow__group">{group}</p>
+          <p class="skillrow__items">
+            {items.map((it, i) => (
+              <>
+                {i > 0 && <span class="sep"> · </span>}
+                {it[1] ? <a href={it[1]}>{it[0]}</a> : <span class="muted">{it[0]}</span>}
+              </>
+            ))}
+          </p>
         </div>
       ))}
     </section>
@@ -133,4 +183,11 @@ const experience = [
     .xp { grid-template-columns: 1fr; gap: 0; }
     .xp__when { margin-bottom: calc(var(--rhythm) * 0.15); }
   }
+
+  .skills-hint { max-width: var(--measure-prose); font-size: var(--text-sm); margin: 0 0 var(--rhythm); }
+  .skillrow { display: grid; grid-template-columns: 9rem 1fr; gap: 0 1.5rem; margin-bottom: var(--rhythm); align-items: baseline; }
+  .skillrow__group { font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-muted); margin: 0; }
+  .skillrow__items { font-family: var(--font-mono); font-size: var(--text-sm); margin: 0; line-height: var(--rhythm); }
+  .skillrow .sep { color: var(--color-rule); }
+  @media (max-width: 720px) { .skillrow { grid-template-columns: 1fr; gap: 0; } .skillrow__group { margin-bottom: calc(var(--rhythm) * 0.15); } }
 </style>
