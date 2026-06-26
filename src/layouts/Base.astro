@@ -38,8 +38,8 @@ const variant = register === 'technical' ? 'd' : 'a';
         <nav class="topnav">
           <a href="/">home</a>
           <a href="/work">work</a>
+          <a href="/about">about</a>
           <a href="/writing/why-this-site">writing</a>
-          <a href="/verse">verse</a>
           <button class="theme-toggle" type="button" aria-label="Toggle dark theme (m)" aria-keyshortcuts="m"><span class="ico">&#9790;</span><kbd class="k">m</kbd></button>
         </nav>
       </div>
@@ -80,6 +80,29 @@ const variant = register === 'technical' ? 'd' : 'a';
           var t = e.target;
           if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
           __toggleTheme();
+        });
+      }
+      if (!window.__verifyWired) {
+        window.__verifyWired = true;
+        function __setVerify(v, open) {
+          v.classList.toggle('is-open', open);
+          var b = v.querySelector('.verify-btn');
+          if (b) { b.setAttribute('aria-expanded', String(open)); b.textContent = open ? '▾ verified · hide' : '▸ verify'; }
+        }
+        document.addEventListener('click', function (e) {
+          var btn = e.target && e.target.closest && e.target.closest('.verify-btn');
+          if (!btn) return;
+          var v = btn.closest('.verify');
+          if (v) __setVerify(v, !v.classList.contains('is-open'));
+        });
+        document.addEventListener('keydown', function (e) {
+          if (e.key !== 'v') return;
+          var t = e.target;
+          if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+          var vs = Array.from(document.querySelectorAll('.verify'));
+          if (!vs.length) return;
+          var anyClosed = vs.some(function (v) { return !v.classList.contains('is-open'); });
+          vs.forEach(function (v) { __setVerify(v, anyClosed); });
         });
       }
       __syncTheme();

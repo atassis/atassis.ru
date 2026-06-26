@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import VariantSwitcher from '../components/VariantSwitcher';
+import Verify from '../components/Verify.astro';
 
 // [verify] only where a real receipt exists. No public proof → honest status tag, never a verify button.
 const crowns = [
@@ -12,6 +13,7 @@ const crowns = [
       ['amd/IRON #123', 'https://github.com/amd/IRON/pull/123'],
     ],
     status: null,
+    caseLink: '/work/npu-engine',
   },
   {
     claim: 'Fixes merged upstream in Zed and helm-diff; an open speculative-decoding PR to vLLM.',
@@ -32,7 +34,7 @@ const crowns = [
 ];
 
 const repos = [
-  ['kde-mcp', 'https://github.com/atassis/kde-mcp', 'computer-use MCP server for the Linux desktop (KDE/Wayland) — accessibility-tree-first, not pixel-clicks.'],
+  ['kde-mcp', 'https://github.com/atassis/kde-mcp', 'computer-use MCP server for the Linux desktop (KDE/Wayland) — accessibility-tree-first, not pixel-clicks.', '/work/kde-mcp'],
   ['tnl', 'https://github.com/atassis/tnl', 'self-hosted ngrok alternative: one-command reverse tunnels behind your own Caddy.'],
   ['evbridge', 'https://github.com/atassis/evbridge', 'evdev→Wayland input bridge for headless / nested compositors.'],
   ['run-script-webpack-plugin', 'https://github.com/atassis/run-script-webpack-plugin', 'in NestJS’ official HMR docs; ~600K npm downloads/mo.'],
@@ -63,25 +65,7 @@ const repos = [
         <div class="crown">
           <p class="crown__claim">{c.claim}</p>
           <div class="crown__verify">
-            {c.proof.length > 0 ? (
-              <>
-                <button class="verify-btn" type="button" aria-expanded="false">&#9656; verify</button>
-                <div class="verify-panel">
-                  <p class="verify-explain">{c.explain}</p>
-                  <p class="verify-proof">
-                    <span class="ok">&check;</span>{' '}
-                    {c.proof.map((p, k) => (
-                      <>
-                        {k > 0 && ' · '}
-                        {p[1] ? <a href={p[1]}>{p[0]}</a> : <span>{p[0]}</span>}
-                      </>
-                    ))}
-                  </p>
-                </div>
-              </>
-            ) : (
-              <span class="status">{c.status}</span>
-            )}
+            <Verify explain={c.explain} proof={c.proof} status={c.status} caseLink={c.caseLink} />
           </div>
         </div>
       ))}
@@ -89,10 +73,11 @@ const repos = [
 
     <section class="grid">
       <h2 class="label">Open source</h2>
-      {repos.map(([name, url, desc]) => (
+      {repos.map(([name, url, desc, caseLink]) => (
         <p class="repo">
           <a class="repo__name" href={url}>{name}</a>
           <span class="muted"> &mdash; {desc}</span>
+          {caseLink && <span class="muted"> · <a href={caseLink}>read the case</a></span>}
         </p>
       ))}
     </section>
@@ -109,34 +94,6 @@ const repos = [
   </main>
 </Base>
 
-<script>
-  function setCrown(crown, open) {
-    crown.classList.toggle('is-open', open);
-    const btn = crown.querySelector('.verify-btn');
-    if (btn) {
-      btn.setAttribute('aria-expanded', String(open));
-      btn.textContent = open ? '▾ verified · hide' : '▸ verify';
-    }
-  }
-  if (!window.__verifyWired) {
-    window.__verifyWired = true;
-    document.addEventListener('click', (e) => {
-      const btn = e.target && e.target.closest && e.target.closest('.verify-btn');
-      if (!btn) return;
-      const crown = btn.closest('.crown');
-      if (crown) setCrown(crown, !crown.classList.contains('is-open'));
-    });
-    document.addEventListener('keydown', (e) => {
-      if (e.key !== 'v') return;
-      const t = e.target;
-      if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
-      const crowns = Array.from(document.querySelectorAll('.crown')).filter((c) => c.querySelector('.verify-btn'));
-      if (!crowns.length) return;
-      const anyClosed = crowns.some((c) => !c.classList.contains('is-open'));
-      crowns.forEach((c) => setCrown(c, anyClosed));
-    });
-  }
-</script>
 
 <style>
   .wrap {
@@ -196,55 +153,8 @@ const repos = [
   .crown__claim { grid-column: 1 / 9; margin: 0; text-wrap: pretty; }
   .crown__verify { grid-column: 9 / 13; }
 
-  .verify-btn {
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    color: var(--color-accent);
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-  }
-  .verify-btn:hover { text-decoration: underline; text-underline-offset: 3px; }
-
-  .status {
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    color: var(--color-muted);
-    opacity: 0.7;
-  }
-
-  .verify-panel {
-    overflow: hidden;
-    max-height: 0;
-    opacity: 0;
-    transition: max-height 0.25s ease, opacity 0.2s ease;
-  }
-  .crown.is-open .verify-panel {
-    max-height: 14rem;
-    opacity: 1;
-    margin-top: calc(var(--rhythm) * 0.35);
-  }
-  .verify-explain {
-    margin: 0;
-    font-size: var(--text-xs);
-    color: var(--color-muted);
-    line-height: calc(var(--rhythm) * 0.85);
-  }
-  .verify-proof {
-    margin: calc(var(--rhythm) * 0.3) 0 0;
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    line-height: calc(var(--rhythm) * 0.85);
-  }
-  .ok { color: var(--color-accent); }
-
   .repo { grid-column: span 6; margin: 0 0 calc(var(--rhythm) * 0.5); }
   .repo__name { font-family: var(--font-mono); font-size: var(--text-sm); }
-
-  @media (prefers-reduced-motion: reduce) {
-    .verify-panel { transition: none; }
-  }
 
   @media (max-width: 820px) {
     .crown { grid-template-columns: 1fr; }
