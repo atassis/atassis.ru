@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import VariantSwitcher from '../components/VariantSwitcher';
 import Verify from '../components/Verify.astro';
+import A from '../components/A.astro';
 
 // [verify] only where a real receipt exists. No public proof → honest status tag, never a verify button.
 const crowns = [
@@ -75,7 +76,7 @@ const repos = [
       <h2 class="label">Open source</h2>
       {repos.map(([name, url, desc, caseLink]) => (
         <p class="repo">
-          <a class="repo__name" href={url}>{name}</a>
+          <A class="repo__name" href={url}>{name}</A>
           <span class="muted"> &mdash; {desc}</span>
           {caseLink && <span class="muted"> · <a href={caseLink}>read the case</a></span>}
         </p>
@@ -87,7 +88,7 @@ const repos = [
       <p>
         <a href="mailto:atassikay38@gmail.com">atassikay38@gmail.com</a>
         <span class="muted"> &middot; </span>
-        <a href="https://github.com/atassis">github.com/atassis</a>
+        <A href="https://github.com/atassis">github.com/atassis</A>
       </p>
       <p class="muted small">Remote-first &middot; open to relocation &middot; Moscow (UTC+3)</p>
     </section>

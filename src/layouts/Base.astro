@@ -122,10 +122,12 @@ const variant = register === 'technical' ? 'd' : 'a';
     backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
     border-bottom: 1px solid var(--color-rule);
   }
+  /* topbar typography is pinned to absolute values so the shared header renders
+     identically on every page, independent of each page's typographic register */
   .topbar__inner {
     max-width: 60rem; margin: 0 auto; padding: 0.7rem 1.5rem;
     display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
-    font-family: var(--font-mono); font-size: var(--text-sm);
+    font-family: "IBM Plex Mono", ui-monospace, "SFMono-Regular", monospace; font-size: 15px;
   }
   .brand { color: var(--color-ink); text-decoration: none; font-weight: 600; }
   .topnav { display: flex; align-items: center; gap: 1rem; }
@@ -135,7 +137,7 @@ const variant = register === 'technical' ? 'd' : 'a';
     display: inline-flex; align-items: center; gap: 0.35rem;
     background: none; border: 1px solid var(--color-rule); border-radius: 4px;
     cursor: pointer; color: var(--color-muted); padding: 0.18rem 0.4rem;
-    font-family: var(--font-mono); font-size: var(--text-sm); line-height: 1;
+    font-family: "IBM Plex Mono", ui-monospace, "SFMono-Regular", monospace; font-size: 15px; line-height: 1;
   }
   .theme-toggle:hover { color: var(--color-accent); border-color: var(--color-accent); }
   .theme-toggle .ico { font-size: 1.05em; }

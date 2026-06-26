@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import VariantSwitcher from '../components/VariantSwitcher';
+import A from '../components/A.astro';
 
 const projects = [
   {
@@ -82,7 +83,7 @@ const skills: [string, [string, string?][]][] = [
 ];
 ---
 
-<Base title="Work — Taimuraz Kaitmazov" register="technical">
+<Base title="Work — Taimuraz Kaitmazov">
   <VariantSwitcher client:load />
 
   <main class="wrap">
@@ -95,7 +96,9 @@ const skills: [string, [string, string?][]][] = [
       <h2 class="label">Selected projects</h2>
       {projects.map((p) => (
         <article class="proj">
-          <h3 class="proj__title">{p.title}</h3>
+          <h3 class="proj__title">
+            {p.caseLink ? <a class="proj__titlelink" href={p.caseLink}>{p.title}</a> : p.title}
+          </h3>
           <p class="proj__body">{p.body}</p>
           <p class="proj__meta">
             {p.meta}
@@ -105,12 +108,11 @@ const skills: [string, [string, string?][]][] = [
                 {p.proof.map((pr, i) => (
                   <>
                     {i > 0 && ' · '}
-                    <a href={pr[1]}>{pr[0]}</a>
+                    <A href={pr[1]}>{pr[0]}</A>
                   </>
                 ))}
               </>
             )}
-            {p.caseLink && <> &middot; <a href={p.caseLink}>read the case &#x2192;</a></>}
           </p>
         </article>
       ))}
@@ -139,7 +141,7 @@ const skills: [string, [string, string?][]][] = [
             {items.map((it, i) => (
               <>
                 {i > 0 && <span class="sep"> · </span>}
-                {it[1] ? <a href={it[1]}>{it[0]}</a> : <span class="muted">{it[0]}</span>}
+                {it[1] ? <A href={it[1]}>{it[0]}</A> : <span class="muted">{it[0]}</span>}
               </>
             ))}
           </p>
@@ -149,7 +151,7 @@ const skills: [string, [string, string?][]][] = [
 
     <section class="lede">
       <h2 class="label">More</h2>
-      <p class="muted">Full CV on request · <a href="https://github.com/atassis">github.com/atassis</a> · <a href="/">home</a></p>
+      <p class="muted">Full CV on request · <A href="https://github.com/atassis">github.com/atassis</A> · <a href="/">home</a></p>
     </section>
   </main>
 </Base>
@@ -170,6 +172,8 @@ const skills: [string, [string, string?][]][] = [
 
   .proj { max-width: var(--measure-prose); margin: 0 0 calc(var(--rhythm) * 1.25); }
   .proj__title { font-family: var(--font-sans); font-weight: 700; font-size: var(--text-lg); margin: 0 0 calc(var(--rhythm) * 0.25); }
+  .proj__titlelink { color: var(--color-ink); text-decoration: underline; text-decoration-color: var(--color-accent); text-underline-offset: 3px; text-decoration-thickness: 2px; }
+  .proj__titlelink:hover { color: var(--color-accent); }
   .proj__body { margin: 0; text-wrap: pretty; }
   .proj__meta { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-muted); margin: calc(var(--rhythm) * 0.3) 0 0; }
 

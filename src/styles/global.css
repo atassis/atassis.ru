@@ -33,7 +33,7 @@
   --grid-max: 72rem;
 }
 
-html { font-size: 18px; }
+html { font-size: 18px; scrollbar-gutter: stable; }
 
 body {
   background: var(--color-paper);
