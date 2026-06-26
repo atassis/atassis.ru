@@ -1,0 +1,1 @@
+import"./hooks.module.DfXdu8sm.js";import"./jsxRuntime.module.CVhCVYCv.js";[{id:`a`,label:`A · editorial`},{id:`d`,label:`D · technical`}].map(e=>e.id);function e(){return null}export{e as default};
