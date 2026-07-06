@@ -7,11 +7,12 @@ import A from '../components/A.astro';
 // [verify] only where a real receipt exists. No public proof → honest status tag, never a verify button.
 const crowns = [
   {
-    claim: 'Built a from-scratch on-device NPU inference engine — 16 models on Linux where AMD’s own stack offloads zero ops, at ~half the CPU’s power. Making it compile at scale meant fixing AMD’s open compiler & operators upstream.',
-    explain: 'The engine repo isn’t public yet — but open the merged PRs: that’s the public, third-party-accepted evidence of the compiler/operator work it required.',
+    claim: 'Built a from-scratch on-device NPU inference engine — 16 models on Linux where AMD’s own stack offloads zero ops, at ~half the CPU’s power. When AMD’s toolchain broke under the load, I fixed its compiler, operators, and LLVM backend rather than stop — 7 fixes now merged by AMD, 7 more in review down to upstream LLVM itself.',
+    explain: 'The engine repo isn’t public yet — but open the PRs: public, third-party-accepted evidence of the work it required. Every fix exists because my own build hit it — the compiler (mlir-aie), the operators (IRON), and the LLVM backend (llvm-aie).',
     proof: [
       ['mlir-aie #3178', 'https://github.com/Xilinx/mlir-aie/pull/3178'],
-      ['amd/IRON #123', 'https://github.com/amd/IRON/pull/123'],
+      ['amd/IRON #124', 'https://github.com/amd/IRON/pull/124'],
+      ['llvm-aie #1054', 'https://github.com/Xilinx/llvm-aie/pull/1054'],
     ],
     status: null,
     caseLink: '/work/npu-engine',

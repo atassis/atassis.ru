@@ -6,9 +6,9 @@ import A from '../components/A.astro';
 const projects = [
   {
     title: 'On-device NPU inference engine — AMD Ryzen AI (XDNA2), Linux',
-    body: 'From-scratch engine running whole model graphs natively on the laptop NPU via the open MLIR-AIE / IRON stack — where the prior open-source high-water mark was a single matmul at ~0.6% utilization and AMD’s own Linux stack offloads zero ops. 16 models across 11 architectures (BERT · Whisper/Parakeet/GigaAM · ViT/DINOv2/ResNet-18/CLIP · ESM-2), parity ~4e-3. Core: fuses a 12-layer decode into one NPU dispatch (72→1 per token), weights + KV resident. −29% energy / ~half the package power vs CPU at equal accuracy (WER 0.117). Making it compile at scale meant fixing AMD’s compiler & operators upstream.',
+    body: 'From-scratch engine running whole model graphs natively on the laptop NPU via the open MLIR-AIE / IRON stack — where the prior open-source high-water mark was a single matmul at ~0.6% utilization and AMD’s own Linux stack offloads zero ops. 16 models across 11 architectures (BERT · Whisper/Parakeet/GigaAM · ViT/DINOv2/ResNet-18/CLIP · ESM-2), parity ~4e-3. Core: fuses a 12-layer decode into one NPU dispatch (72→1 per token), weights + KV resident. −29% energy / ~half the package power vs CPU at equal accuracy (WER 0.117). When the toolchain broke under the load I fixed AMD’s compiler, operators, and LLVM backend rather than downscope — 7 merged, 7 more in review down to upstream LLVM.',
     meta: 'MLIR-AIE · IRON · Peano · XRT · Rust · sole architect',
-    proof: [['mlir-aie #3178', 'https://github.com/Xilinx/mlir-aie/pull/3178'], ['amd/IRON #123', 'https://github.com/amd/IRON/pull/123']],
+    proof: [['mlir-aie #3178', 'https://github.com/Xilinx/mlir-aie/pull/3178'], ['amd/IRON #124', 'https://github.com/amd/IRON/pull/124'], ['llvm-aie #1054', 'https://github.com/Xilinx/llvm-aie/pull/1054']],
     caseLink: '/work/npu-engine',
   },
   {
@@ -68,6 +68,7 @@ const skills: [string, [string, string?][]][] = [
     ['vLLM on H100'],
     ['ClickHouse'],
     ['MLIR / compiler internals → mlir-aie #3178', 'https://github.com/Xilinx/mlir-aie/pull/3178'],
+    ['LLVM backend → llvm-aie #1054', 'https://github.com/Xilinx/llvm-aie/pull/1054'],
   ]],
   ['AI / ML', [
     ['on-device NPU inference → NPU engine', '/work/npu-engine'],

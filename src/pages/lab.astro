@@ -75,15 +75,16 @@ const sectionGap = 'margin-bottom: calc(var(--rhythm)*2);';
             AMD Ryzen AI NPU toolchain
           </h3>
           <p style="margin: 0; text-wrap: pretty;">
-            Merged compiler &amp; operator fixes so it scales to large designs &mdash; eliminated the
-            O(n&sup2;) build walls, with byte-identical output.
+            Fixed AMD&rsquo;s toolchain at every layer it broke &mdash; compiler, operators, and the
+            LLVM backend &mdash; so it scales to large designs, with byte-identical output.
           </p>
         </div>
         <aside style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-muted); line-height: calc(var(--rhythm)*0.85);">
           <div style="color: var(--color-accent);">&check; verified</div>
           <div>mlir-aie #3178 &middot; merged</div>
-          <div>amd/IRON #123 &middot; merged</div>
-          <div>&minus;58% aiecc wall</div>
+          <div>amd/IRON #124 &middot; merged</div>
+          <div>llvm-aie #1054 &middot; in review</div>
+          <div>7 merged &middot; 7 in review</div>
         </aside>
       </div>
     </section>
