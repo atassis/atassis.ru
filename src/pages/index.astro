@@ -7,12 +7,13 @@ import A from '../components/A.astro';
 // [verify] only where a real receipt exists. No public proof → honest status tag, never a verify button.
 const crowns = [
   {
-    claim: 'Built a from-scratch on-device NPU inference engine — 16 models on Linux where AMD’s own stack offloads zero ops, at ~half the CPU’s power. When AMD’s toolchain broke under the load, I fixed its compiler, operators, and LLVM backend rather than stop — 7 fixes now merged by AMD, 7 more in review down to upstream LLVM itself.',
-    explain: 'The engine repo isn’t public yet — but open the PRs: public, third-party-accepted evidence of the work it required. Every fix exists because my own build hit it — the compiler (mlir-aie), the operators (IRON), and the LLVM backend (llvm-aie).',
+    claim: 'Built a from-scratch on-device NPU inference engine — runs whole model graphs on the laptop NPU (a 16-model loader, 6 proven end-to-end) where AMD’s own answer is a closed, fixed catalog, at ~half the CPU’s power. When AMD’s toolchain broke under the load, I fixed its compiler, operators, and LLVM backend rather than stop — 11 fixes now merged by AMD, 5 more in review down to upstream LLVM itself.',
+    explain: 'The engine is public (Apache-2.0) — and so are the PRs: public, third-party-accepted evidence of the work it required. Every fix exists because my own build hit it — the compiler (mlir-aie), the operators (IRON), the runtime (mlir-air), and the LLVM backend (llvm-aie).',
     proof: [
+      ['xdna-engine (repo)', 'https://github.com/atassis/xdna-engine'],
       ['mlir-aie #3178', 'https://github.com/Xilinx/mlir-aie/pull/3178'],
       ['amd/IRON #124', 'https://github.com/amd/IRON/pull/124'],
-      ['llvm-aie #1054', 'https://github.com/Xilinx/llvm-aie/pull/1054'],
+      ['llvm-aie #1059', 'https://github.com/Xilinx/llvm-aie/pull/1059'],
     ],
     status: null,
     caseLink: '/work/npu-engine',

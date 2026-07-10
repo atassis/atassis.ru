@@ -5,11 +5,11 @@ import StatStrip from '../../components/StatStrip.astro';
 import A from '../../components/A.astro';
 
 const stats: [string, string][] = [
-  ['coverage', '16 models · 11 archs'],
-  ['dispatch per token', '72 → 1'],
+  ['coverage', '16 loader · 6 on-NPU'],
+  ['host dispatch / token', '~33 → 1'],
   ['energy vs CPU', '−29%'],
-  ['accuracy', 'WER 0.117'],
-  ['numerical parity', '~4e-3'],
+  ['aiecc build', '~9 min → ~44 s'],
+  ['upstream merged', '11 PRs'],
   ['prior OSS high-water', '~0.6% util'],
 ];
 
@@ -19,8 +19,12 @@ const proof: [string, string?][] = [
   ['mlir-aie #3212', 'https://github.com/Xilinx/mlir-aie/pull/3212'],
   ['mlir-aie #3216', 'https://github.com/Xilinx/mlir-aie/pull/3216'],
   ['mlir-aie #3221', 'https://github.com/Xilinx/mlir-aie/pull/3221'],
+  ['mlir-aie #3257', 'https://github.com/Xilinx/mlir-aie/pull/3257'],
   ['amd/IRON #123', 'https://github.com/amd/IRON/pull/123'],
   ['amd/IRON #124', 'https://github.com/amd/IRON/pull/124'],
+  ['mlir-air #1694', 'https://github.com/Xilinx/mlir-air/pull/1694'],
+  ['mlir-air #1695', 'https://github.com/Xilinx/mlir-air/pull/1695'],
+  ['llvm-aie #1059', 'https://github.com/Xilinx/llvm-aie/pull/1059'],
 ];
 ---
 <Base title="NPU inference engine — Taimuraz Kaitmazov">
@@ -36,19 +40,19 @@ const proof: [string, string?][] = [
       <div class="article__body">
         <section class="lede">
           <h2 class="label">The bar before me</h2>
-          <p>On Linux, the open-source high-water mark for this NPU was a single matmul at ~0.6% utilization, and AMD's own Linux stack offloads zero ops to it. Running real model graphs — transformers, ASR, vision, protein models — natively on the part, end to end, was simply not a thing that existed.</p>
+          <p>On Linux, the open-source high-water mark for this NPU was a single unfused matmul at ~0.6% utilization, and AMD's own answer is a closed, fixed-catalog product. A <em>general</em> open engine running real model graphs — transformers, ASR, vision, protein models — natively on the part, end to end, was simply not a thing that existed.</p>
         </section>
 
         <section class="lede">
           <h2 class="label">What I built</h2>
-          <p>An inference engine on the open MLIR-AIE / IRON stack that compiles and runs 16 models across 11 architectures natively on the NPU — BERT · Whisper / Parakeet / GigaAM · ViT / DINOv2 / ResNet-18 / CLIP · ESM-2 — at numerical parity ~4e-3 against the reference implementations.</p>
-          <p>The core trick is collapsing a 12-layer transformer decode into a single NPU dispatch — 72 dispatches per token down to 1 — with weights and the KV cache resident on the device, so each token isn't paying host round-trip and re-upload costs.</p>
+          <p>An inference engine on the open MLIR-AIE / IRON stack. One parity-gated loader compiles 16 models across 11 architectures — BERT · Whisper / Parakeet / GigaAM · ViT / DINOv2 / ResNet-18 / CLIP · ESM-2 — to a bf16 arena at ~4e-3 against the reference implementations, with no Python at runtime; six families are proven running end-to-end on the NPU (Whisper decode with on-device lm-head + argmax, GigaAM / Parakeet encoders, BGE + ESM-2 embeddings, full ResNet-18). It ships as a live local service a dictation app uses daily. Public, Apache-2.0: <A href="https://github.com/atassis/xdna-engine">github.com/atassis/xdna-engine</A>.</p>
+          <p>I mapped the pipeline by device trace and showed it is data-movement-bound — the compute array sits ~84% idle at ~1.7% utilization — so the wins came from eliminating movement, not faster arithmetic. The sharpest one collapses a 12-layer transformer decode into a single resident NPU dispatch — from ~33 host dispatches per token down to one — with weights and the KV cache resident on the device, so each token isn't paying host round-trip and re-upload costs.</p>
         </section>
 
         <section class="lede">
           <h2 class="label">When the toolchain broke</h2>
           <p>I built this as a <em>consumer</em> of AMD's open NPU stack — and at transformer scale it broke at every layer. I didn't file blocker bugs and wait, and I didn't downscope to route around them: I went down to the layer each defect lived on and fixed it there, then kept building.</p>
-          <p>The <strong>compiler</strong> (mlir-aie) couldn't finish compiling large designs — I cut its O(n²) passes to linear (byte-identical output, ~58% off aiecc, ~11× less peak memory). The <strong>operator library</strong> (IRON) was missing the GEMM-fusion and batched transpose those designs need — I added them. And an on-hardware test caught AMD's <strong>LLVM backend</strong> silently computing wrong answers — a load scheduled into a soft-float call's delay slots on the in-order AIE core; I root-caused it, pinned CI to unblock the project now, and fixed it at the backend, upstreaming a register-overflow diagnostic all the way into LLVM proper — the compiler infrastructure Clang, Rust and Swift are built on.</p>
+          <p>The <strong>compiler</strong> (mlir-aie) couldn't finish compiling large designs — I cut its O(n²) passes to linear, taking a kernel build from ~9 min to ~44 s with byte-identical output. The <strong>operator library</strong> (IRON) was missing the GEMM-fusion and batched transpose those designs need — I added them. In the <strong>runtime</strong> (mlir-air) I re-armed cascade locks across re-dispatch — which caught a +42% on-device flash-attention regression a maintainer's change had introduced. And an on-hardware test caught AMD's <strong>LLVM backend</strong> silently computing wrong answers — a load scheduled into a soft-float call's delay slots on the in-order AIE core; I root-caused it, pinned CI to unblock the project now, and fixed it at the backend, upstreaming a register-overflow diagnostic all the way into LLVM proper — the compiler infrastructure Clang, Rust and Swift are built on.</p>
         </section>
 
         <StatStrip stats={stats} />
@@ -61,14 +65,14 @@ const proof: [string, string?][] = [
       <aside class="ledger" aria-label="Receipts">
         <div class="ledger__inner">
           <div class="ledger__label">receipts</div>
-          <p class="ledger__note">The engine itself isn't public yet (AGPL, in progress) — but the toolchain work it required is, and every fix below reads <em>Merged</em> in AMD's own repos. Accepted by their maintainers, not by me.</p>
-          <div class="ledger__ok">&check; merged &middot; AMD repos</div>
+          <p class="ledger__note">The engine is public (Apache-2.0) — <A href="https://github.com/atassis/xdna-engine">github.com/atassis/xdna-engine</A> — and so is the toolchain work it required: every fix below reads <em>Merged</em> in AMD's own repos. Accepted by their maintainers, not by me.</p>
+          <div class="ledger__ok">&check; 11 merged &middot; AMD / LLVM repos</div>
           <ul class="ledger__list">
             {proof.map(([name, url]) => (
               <li>{url ? <A href={url}>{name}</A> : <span>{name}</span>}</li>
             ))}
           </ul>
-          <div class="ledger__more">+ 7 in review — mlir-aie #3257, IRON #127, <A href="https://github.com/Xilinx/llvm-aie/pulls?q=is%3Apr+author%3Aatassis">llvm-aie ×4</A>, <A href="https://github.com/llvm/llvm-project/pull/206346">upstream LLVM</A></div>
+          <div class="ledger__more">+ 5 in review — IRON #127, <A href="https://github.com/Xilinx/llvm-aie/pulls?q=is%3Apr+author%3Aatassis">llvm-aie ×3</A>, <A href="https://github.com/llvm/llvm-project/pull/206346">upstream LLVM</A></div>
         </div>
       </aside>
     </div>
