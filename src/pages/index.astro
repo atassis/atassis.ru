@@ -7,7 +7,7 @@ import A from '../components/A.astro';
 // [verify] only where a real receipt exists. No public proof → honest status tag, never a verify button.
 const crowns = [
   {
-    claim: 'Built a from-scratch on-device NPU inference engine (open kernels, Apache-2.0). It runs whole model graphs on the laptop NPU: a 16-model loader, 6 proven end-to-end. Device trace showed it’s data-movement-bound (~93% of on-device time is overhead, not compute), so I cut it there. When AMD’s toolchain broke under the load, I fixed its compiler, operators, driver, and LLVM backend instead of stopping: 20+ fixes merged by AMD, one merged into upstream LLVM itself, 4 more in review.',
+    claim: 'Built a from-scratch on-device NPU inference engine (open kernels, Apache-2.0). It runs model graphs on the laptop NPU: a 16-model parity loader, with ASR fully end-to-end and embeddings and vision also running on the device. Device trace showed it’s data-movement-bound (~93% of on-device time is overhead, not compute), so I cut it there. When AMD’s toolchain broke under the load, I fixed its compiler, operators, driver, and LLVM backend instead of stopping: 20+ fixes merged by AMD, one merged into upstream LLVM itself, 4 more in review.',
     explain: 'The engine is public (Apache-2.0), and so are the PRs: public, third-party-accepted evidence of the work it required. Every fix exists because my own build hit it: the compiler (mlir-aie), the operators (IRON), the runtime (mlir-air), and the LLVM backend (llvm-aie).',
     proof: [
       ['xdna-engine (repo)', 'https://github.com/atassis/xdna-engine'],

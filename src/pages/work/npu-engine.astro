@@ -5,7 +5,7 @@ import StatStrip from '../../components/StatStrip.astro';
 import A from '../../components/A.astro';
 
 const stats: [string, string][] = [
-  ['coverage', '16 loader · 6 on-NPU'],
+  ['coverage', '16 baked · ASR e2e'],
   ['on-device time = overhead', '~93%'],
   ['array util while computing', '~31% of peak'],
   ['host dispatch / token', '~33 → 1'],
@@ -47,7 +47,7 @@ const proof: [string, string?][] = [
 
         <section class="lede">
           <h2 class="label">What I built</h2>
-          <p>An inference engine on the open MLIR-AIE / IRON stack. One parity-gated loader compiles 16 models across 11 architectures (BERT · Whisper / Parakeet / GigaAM · ViT / DINOv2 / ResNet-18 / CLIP · ESM-2) to a bf16 arena at ~4e-3 against the reference implementations, with no Python at runtime; six families are proven running end-to-end on the NPU (Whisper decode with on-device lm-head + argmax, GigaAM / Parakeet encoders, BGE + ESM-2 embeddings, full ResNet-18). It ships as a live local service a dictation app uses daily. Public, Apache-2.0: <A href="https://github.com/atassis/xdna-engine">github.com/atassis/xdna-engine</A>.</p>
+          <p>An inference engine on the open MLIR-AIE / IRON stack. One parity-gated loader compiles 16 models across 11 architectures (BERT · Whisper / Parakeet / GigaAM · ViT / DINOv2 / ResNet-18 / CLIP · ESM-2) to a bf16 arena at ~4e-3 against the reference implementations, with no Python at runtime. ASR is fully end-to-end on the NPU: GigaAM / Parakeet encoders and Whisper decode with on-device lm-head + argmax. Embeddings (BGE and other BERT encoders, 2.5–4× vs host) and vision (ViT / DINOv2 / ResNet-18) also run on the NPU; the remaining families, including ESM-2, are still in progress. It ships as a live local service a dictation app uses daily. Public, Apache-2.0: <A href="https://github.com/atassis/xdna-engine">github.com/atassis/xdna-engine</A>.</p>
           <p>I mapped the pipeline by device trace and showed it is <strong>data-movement-bound</strong>: ~93% of on-device time is context-reload and DMA, not compute. The array actually computes only ~7% of the time, and when it does, it reaches ~31% of the chip's bf16 peak. So the wins came from eliminating movement, not faster arithmetic. The sharpest one collapses a 12-layer transformer decode into a single resident NPU dispatch (from ~33 host dispatches per token down to one), with weights and the KV cache resident on the device, so each token isn't paying host round-trip and re-upload costs.</p>
         </section>
 
