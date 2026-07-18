@@ -35,46 +35,46 @@ const proof: [string, string?][] = [
     <p class="back"><a href="/work">← work</a></p>
     <header class="lede">
       <h1>On-device NPU inference engine</h1>
-      <p class="muted">AMD Ryzen AI (XDNA2), Linux. A from-scratch engine — open kernels, Apache-2.0 — running whole model graphs natively on the laptop NPU.</p>
+      <p class="muted">AMD Ryzen AI (XDNA2), Linux. A from-scratch engine (open kernels, Apache-2.0) running whole model graphs natively on the laptop NPU.</p>
     </header>
 
     <div class="article">
       <div class="article__body">
         <section class="lede">
           <h2 class="label">The bar before me</h2>
-          <p>On Linux, a <em>general</em> open engine running real model graphs — transformers, ASR, vision, protein models — natively on this NPU, end to end, with kernels you can read and change, wasn't a thing that existed. The open building blocks were isolated example kernels; the turnkey runtimes ship their NPU kernels as closed binaries. So I wrote one from scratch, kernels included.</p>
+          <p>On Linux, a <em>general</em> open engine running real model graphs (transformers, ASR, vision, protein models) natively on this NPU, end to end, with kernels you can read and change, wasn't a thing that existed. The open building blocks were isolated example kernels. The turnkey runtimes ship their NPU kernels as closed binaries. So I wrote one from scratch, kernels included.</p>
         </section>
 
         <section class="lede">
           <h2 class="label">What I built</h2>
-          <p>An inference engine on the open MLIR-AIE / IRON stack. One parity-gated loader compiles 16 models across 11 architectures — BERT · Whisper / Parakeet / GigaAM · ViT / DINOv2 / ResNet-18 / CLIP · ESM-2 — to a bf16 arena at ~4e-3 against the reference implementations, with no Python at runtime; six families are proven running end-to-end on the NPU (Whisper decode with on-device lm-head + argmax, GigaAM / Parakeet encoders, BGE + ESM-2 embeddings, full ResNet-18). It ships as a live local service a dictation app uses daily. Public, Apache-2.0: <A href="https://github.com/atassis/xdna-engine">github.com/atassis/xdna-engine</A>.</p>
-          <p>I mapped the pipeline by device trace and showed it is <strong>data-movement-bound</strong>: ~93% of on-device time is context-reload and DMA, not compute — the array actually computes only ~7% of the time, and when it does it reaches ~31% of the chip's bf16 peak. So the wins came from eliminating movement, not faster arithmetic. The sharpest one collapses a 12-layer transformer decode into a single resident NPU dispatch — from ~33 host dispatches per token down to one — with weights and the KV cache resident on the device, so each token isn't paying host round-trip and re-upload costs.</p>
+          <p>An inference engine on the open MLIR-AIE / IRON stack. One parity-gated loader compiles 16 models across 11 architectures (BERT · Whisper / Parakeet / GigaAM · ViT / DINOv2 / ResNet-18 / CLIP · ESM-2) to a bf16 arena at ~4e-3 against the reference implementations, with no Python at runtime; six families are proven running end-to-end on the NPU (Whisper decode with on-device lm-head + argmax, GigaAM / Parakeet encoders, BGE + ESM-2 embeddings, full ResNet-18). It ships as a live local service a dictation app uses daily. Public, Apache-2.0: <A href="https://github.com/atassis/xdna-engine">github.com/atassis/xdna-engine</A>.</p>
+          <p>I mapped the pipeline by device trace and showed it is <strong>data-movement-bound</strong>: ~93% of on-device time is context-reload and DMA, not compute. The array actually computes only ~7% of the time, and when it does, it reaches ~31% of the chip's bf16 peak. So the wins came from eliminating movement, not faster arithmetic. The sharpest one collapses a 12-layer transformer decode into a single resident NPU dispatch (from ~33 host dispatches per token down to one), with weights and the KV cache resident on the device, so each token isn't paying host round-trip and re-upload costs.</p>
         </section>
 
         <section class="lede">
           <h2 class="label">When the toolchain broke</h2>
-          <p>I built this as a <em>consumer</em> of AMD's open NPU stack — and at transformer scale it broke at every layer. I didn't file blocker bugs and wait, and I didn't downscope to route around them: I went down to the layer each defect lived on and fixed it there, then kept building.</p>
-          <p>The <strong>compiler</strong> (mlir-aie) couldn't finish compiling large designs — I cut the O(n²) passes to linear (several of them, not just aiecc), taking a full kernel build from ~20 min to under a minute, byte-identical output. The <strong>operator library</strong> (IRON) was missing the GEMM-fusion and batched transpose those designs need — I added them. In the <strong>runtime</strong> (mlir-air) I fixed a real single-trip cascade re-entrancy bug — an abort on the second dispatch that broke any re-run of a single-trip (M=1 decode) cascade kernel. In the <strong>driver</strong> (xdna-driver) I found a race where a device sync could return before the last DMA line had landed — a stale read that matched the golden value until it didn't (13–15% of 500 runs); I proved it with a 3200-run A/B (43 failures → 0, p ≈ 1e-19) and it merged the same day. And an on-hardware test caught AMD's <strong>LLVM backend</strong> silently computing wrong answers — a load scheduled into a soft-float call's delay slots on the in-order AIE core; I root-caused it, pinned CI to unblock the project now, fixed it at the backend, and merged a register-overflow diagnostic upstream into <strong>LLVM proper itself</strong> — the compiler infrastructure Clang, Rust and Swift are built on.</p>
+          <p>I built this as a <em>consumer</em> of AMD's open NPU stack. At transformer scale, it broke at every layer. I didn't file blocker bugs and wait, and I didn't downscope to route around them: I went down to the layer each defect lived on and fixed it there, then kept building.</p>
+          <p>The <strong>compiler</strong> (mlir-aie) couldn't finish compiling large designs. I cut the O(n²) passes to linear (several of them, not just aiecc): a full kernel build went from ~20 min to under a minute, with byte-identical output. The <strong>operator library</strong> (IRON) was missing the GEMM-fusion and batched transpose those designs need, so I added them. In the <strong>runtime</strong> (mlir-air), I fixed a real single-trip cascade re-entrancy bug: an abort on the second dispatch that broke any re-run of a single-trip (M=1 decode) cascade kernel. In the <strong>driver</strong> (xdna-driver), I found a race where a device sync could return before the last DMA line had landed: a stale read that matched the golden value until it didn't (13–15% of 500 runs). I proved it with a 3200-run A/B (43 failures → 0, p ≈ 1e-19), and it merged the same day. And an on-hardware test caught AMD's <strong>LLVM backend</strong> silently computing wrong answers: a load scheduled into a soft-float call's delay slots on the in-order AIE core. I root-caused it, pinned CI to unblock the project now, fixed it at the backend, and merged a register-overflow diagnostic upstream into <strong>LLVM proper itself</strong>, the compiler infrastructure Clang, Rust and Swift are built on.</p>
         </section>
 
         <StatStrip stats={stats} />
 
         <section class="lede">
-          <p>At equal accuracy (WER 0.117 on speech), full-NPU decode draws measurably lower package power — roughly −29% energy versus the same workload on the CPU, at zero CPU cores busy. (Measured at the package via RAPL; the NPU-only draw is inferred from that, not isolated by an external meter.) It's an energy-and-offload win, not a latency one — the honest point of an NPU here.</p>
+          <p>At equal accuracy (WER 0.117 on speech), full-NPU decode draws measurably lower package power: roughly −29% energy versus the same workload on the CPU, at zero CPU cores busy. (Measured at the package via RAPL; the NPU-only draw is inferred from that, not isolated by an external meter.) It's an energy-and-offload win, not a latency one. That's the honest point of an NPU here.</p>
         </section>
       </div>
 
       <aside class="ledger" aria-label="Receipts">
         <div class="ledger__inner">
           <div class="ledger__label">receipts</div>
-          <p class="ledger__note">The engine is public (Apache-2.0) — <A href="https://github.com/atassis/xdna-engine">github.com/atassis/xdna-engine</A> — and so is the toolchain work it required: every fix below reads <em>Merged</em> in AMD's own repos. Accepted by their maintainers, not by me.</p>
+          <p class="ledger__note">The engine is public (Apache-2.0, <A href="https://github.com/atassis/xdna-engine">github.com/atassis/xdna-engine</A>), and so is the toolchain work it required: every fix below reads <em>Merged</em> in AMD's own repos. Accepted by their maintainers, not by me.</p>
           <div class="ledger__ok">&check; 20+ merged &middot; AMD / LLVM repos</div>
           <ul class="ledger__list">
             {proof.map(([name, url]) => (
               <li>{url ? <A href={url}>{name}</A> : <span>{name}</span>}</li>
             ))}
           </ul>
-          <div class="ledger__more">+ 4 in review — <A href="https://github.com/amd/IRON/pulls?q=is%3Apr+author%3Aatassis+is%3Aopen">IRON #134/#135</A>, <A href="https://github.com/Xilinx/llvm-aie/pull/1060">llvm-aie #1060</A>, <A href="https://github.com/vllm-project/vllm/pull/44698">vLLM #44698</A></div>
+          <div class="ledger__more">+ 4 in review: <A href="https://github.com/amd/IRON/pulls?q=is%3Apr+author%3Aatassis+is%3Aopen">IRON #134/#135</A>, <A href="https://github.com/Xilinx/llvm-aie/pull/1060">llvm-aie #1060</A>, <A href="https://github.com/vllm-project/vllm/pull/44698">vLLM #44698</A></div>
         </div>
       </aside>
     </div>

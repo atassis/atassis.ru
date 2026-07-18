@@ -19,20 +19,20 @@ const mono = 'font-family: var(--font-mono); font-size: 0.9em;';
     <h1 style={h1}>Why this site looks like this</h1>
 
     <p style={`${p} color: var(--color-muted); font-size: var(--text-lg); margin-top: var(--rhythm);`}>
-      Most engineers&rsquo; personal sites fail in one of two ways. I tried to avoid both by
-      building this one the way I build systems: state less, prove more, make the structure visible.
+      Most engineers&rsquo; personal sites fail in one of two ways. I built this one the way I
+      build systems. Say less. Prove more. Let the structure show itself.
     </p>
 
     <p style={p}>
-      Either they shout &mdash; &ldquo;passionate, results-driven, world-class&rdquo; &mdash;
-      adjectives no one can check. Or they&rsquo;re a beige r&eacute;sum&eacute; that could belong
-      to anyone. I wanted neither.
+      Either they shout &ldquo;passionate, results-driven, world-class&rdquo; (adjectives no one
+      can check). Or they&rsquo;re a beige r&eacute;sum&eacute; that could belong to anyone. I
+      wanted neither.
     </p>
 
     <h2 style={h2}>Verify, don&rsquo;t assert</h2>
     <p style={p}>
       The thing I actually do for a living is distrust the happy path. I don&rsquo;t take the
-      compiler&rsquo;s word that the output is correct &mdash; I check it against a benchmark, a
+      compiler&rsquo;s word that the output is correct. I check it against a benchmark, a
       gold-set, a byte-identical diff. So this site doesn&rsquo;t ask you to take my word either.
       Every claim carries its receipt: a number, a merged-PR link, a commit.
       &ldquo;16 models baked for the NPU, 6 proven end-to-end, kernels open&rdquo; is a sentence you can
@@ -40,14 +40,13 @@ const mono = 'font-family: var(--font-mono); font-size: 0.9em;';
       doesn&rsquo;t get the checkmark.
     </p>
     <p style={p}>
-      That single idea &mdash; open a claim and see its proof &mdash; is the spine of the whole
-      site. It&rsquo;s the most honest thing I can put on a page, because it&rsquo;s the same move I
-      make in code.
+      Open a claim and see its proof: that single idea is the spine of the whole site. It&rsquo;s
+      the most honest thing I can put on a page, because it&rsquo;s the same move I make in code.
     </p>
 
     <h2 style={h2}>Invisible craft over visible effort</h2>
     <p style={p}>
-      Before designing anything I read what the technical crowd actually praises &mdash; and, more
+      Before designing anything, I read what the technical crowd actually praises, and, more
       usefully, what it mocks. The pattern is brutal and clear: people reward invisible craft
       (typography, speed, restraint) and ridicule visible effort (intro loaders, particle
       backgrounds, custom cursors, scroll-jacking, the obligatory &ldquo;terminal typing&rdquo;
@@ -55,8 +54,8 @@ const mono = 'font-family: var(--font-mono); font-size: 0.9em;';
     </p>
     <p style={p}>
       So the aesthetic here is deliberately quiet: warm paper, near-monochrome, one earthy accent,
-      almost no motion. The few moving parts are functional, not decorative. The goal is that nothing
-      looks like it&rsquo;s trying &mdash; which, of course, takes the most trying.
+      almost no motion. The few moving parts are functional, not decorative. Nothing here should
+      look like it&rsquo;s trying. Of course, that takes the most trying of all.
     </p>
 
     <h2 style={h2}>A real type system, not vibes</h2>
@@ -70,18 +69,18 @@ const mono = 'font-family: var(--font-mono); font-size: 0.9em;';
       (every size is the base times a fixed ratio), a <span style={mono}>vertical rhythm</span> (all
       spacing is a whole multiple of one baseline unit, so text sits on an invisible grid), one
       spacing scale shared by horizontal and vertical gaps, and a comfortable measure for reading.
-      These live as <span style={mono}>design tokens</span> &mdash; change the base or the ratio in
+      These live as <span style={mono}>design tokens</span>: change the base or the ratio in
       one place and the whole site re-proportions itself, coherently.
     </p>
     <p style={p}>
-      While building it I kept a grid overlay I could toggle on &mdash; baseline lines and columns
-      drawn over the page &mdash; to check that things actually land on the grid instead of merely
+      While building it I kept a grid overlay I could toggle on (baseline lines and columns
+      drawn over the page) to check that things actually land on the grid instead of merely
       looking close. Seeing the rigor is half of getting it right.
     </p>
 
     <h2 style={h2}>Two sides on one page</h2>
     <p style={p}>
-      I write systems, and I write verse. Most advice says to hide the second thing &mdash; keep it
+      I write systems, and I write verse. Most advice says to hide the second thing: keep it
       &ldquo;professional.&rdquo; I think that&rsquo;s the wrong instinct for the people I want to
       work with: a real, multidimensional person beats a r&eacute;sum&eacute; avatar. So the poetry
       is here, in Russian, on its own narrower measure and its own serif, so it breathes differently
@@ -89,21 +88,21 @@ const mono = 'font-family: var(--font-mono); font-size: 0.9em;';
     </p>
     <p style={p}>
       And the &ldquo;open it and see the proof&rdquo; idea extends naturally: a claim opens to its
-      receipt; a poem can open to its structure &mdash; its meter, an earlier draft of a line. Same
+      receipt; a poem can open to its structure: its meter, an earlier draft of a line. Same
       gesture, two materials. It&rsquo;s the one thing here that only an engineer who is also a poet
       could have made.
     </p>
 
     <h2 style={h2}>Where it lives</h2>
     <p style={p}>
-      Static site, built with Astro, served from GitHub Pages. It never touches my own servers
-      &mdash; my homelab runs my services; my public face shouldn&rsquo;t be a door into them. It
-      loads fast, works without JavaScript for everything that matters, and degrades gracefully where
-      a browser is old.
+      Static site, built with Astro, served from GitHub Pages. It never touches my own servers.
+      My homelab runs my services; my public face shouldn&rsquo;t be a door into them. It loads
+      fast and works without JavaScript for everything that matters. It also degrades gracefully
+      where a browser is old.
     </p>
 
     <p style={`${mono} color: var(--color-muted); border-top: 1px solid var(--color-rule); padding-top: var(--rhythm); margin-top: calc(var(--rhythm)*2);`}>
-      <span style="color: var(--color-accent);">&check;</span> this page is the first receipt &mdash;
+      <span style="color: var(--color-accent);">&check;</span> this page is the first receipt:
       a site that explains how it was built.
     </p>
   </article>

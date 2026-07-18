@@ -6,7 +6,7 @@ import A from '../components/A.astro';
 const projects = [
   {
     title: 'On-device NPU inference engine — AMD Ryzen AI (XDNA2), Linux',
-    body: 'From-scratch engine — open kernels included — running whole model graphs natively on the laptop NPU via the open MLIR-AIE / IRON stack; a general open engine of this kind (vs isolated example kernels and closed-binary turnkey runtimes) didn’t exist. A 16-model / 11-architecture loader (BERT · Whisper/Parakeet/GigaAM · ViT/DINOv2/ResNet-18/CLIP · ESM-2), parity ~4e-3, six proven end-to-end on the NPU. Core finding: proved by device trace it’s data-movement-bound — ~93% of on-device time is overhead, not compute — then fused a 12-layer decode into one NPU dispatch (~33 host dispatches → 1 per token), weights + KV resident. Lower package power at equal accuracy (WER 0.117) — an energy/offload win (RAPL package-level), not a latency claim. When the toolchain broke under the load I fixed AMD’s compiler, operators, driver, and LLVM backend rather than downscope — 20+ merged, one merged into upstream LLVM itself, 4 more in review. Public (Apache-2.0).',
+    body: 'From-scratch engine (open kernels included), running whole model graphs natively on the laptop NPU via the open MLIR-AIE / IRON stack; a general open engine of this kind (vs isolated example kernels and closed-binary turnkey runtimes) didn’t exist. A 16-model / 11-architecture loader (BERT · Whisper/Parakeet/GigaAM · ViT/DINOv2/ResNet-18/CLIP · ESM-2), parity ~4e-3, six proven end-to-end on the NPU. Core finding: proved by device trace that it’s data-movement-bound. ~93% of on-device time is overhead, not compute. So I fused a 12-layer decode into one NPU dispatch (~33 host dispatches → 1 per token), weights + KV resident. Lower package power at equal accuracy (WER 0.117): an energy/offload win (RAPL package-level), not a latency claim. When the toolchain broke under the load I fixed AMD’s compiler, operators, driver, and LLVM backend rather than downscope. 20+ merged, one merged into upstream LLVM itself, 4 more in review. Public (Apache-2.0).',
     meta: 'MLIR-AIE · IRON · Peano · XRT · Rust · sole architect',
     proof: [['mlir-aie #3178', 'https://github.com/Xilinx/mlir-aie/pull/3178'], ['amd/IRON #124', 'https://github.com/amd/IRON/pull/124'], ['llvm-aie #1059', 'https://github.com/Xilinx/llvm-aie/pull/1059']],
     caseLink: '/work/npu-engine',
@@ -19,13 +19,13 @@ const projects = [
   },
   {
     title: 'Document-intelligence pipeline for accounting primaries',
-    body: 'Self-hosted OCR → LLM extraction of structured fields from Russian accounting primaries, PII kept on-premise (dots.ocr on H100 + an LLM extraction stage). Built a small-scale eval harness — a 6–9-doc hand-labeled gold-set plus ~30 model-labeled “silver” docs, a human-in-the-loop labeler and a scorer — then benchmarked OCR→LLM architectures on it, choosing the production design on ground truth rather than impression (privacy-vs-accuracy tradeoff quantified).',
+    body: 'Self-hosted OCR → LLM extraction of structured fields from Russian accounting primaries, PII kept on-premise (dots.ocr on H100 + an LLM extraction stage). Built a small-scale eval harness: a 6–9-doc hand-labeled gold-set plus ~30 model-labeled “silver” docs, a human-in-the-loop labeler and a scorer. Then benchmarked OCR→LLM architectures on it, choosing the production design on ground truth rather than impression (privacy-vs-accuracy tradeoff quantified).',
     meta: 'vLLM · H100 · FastAPI · sole engineer · production',
     proof: [],
   },
   {
     title: 'kde-mcp — computer-use MCP for the Linux desktop',
-    body: 'The kind of tool Anthropic’s computer-use covers for macOS/Windows, still rare on Linux/Wayland — built from scratch, solo. Drives apps through the accessibility tree (like a screen reader) rather than pixel-clicks: more reliable and safer. Safety policy gate, ADR-documented.',
+    body: 'The kind of tool Anthropic’s computer-use covers for macOS/Windows, still rare on Linux/Wayland. Built from scratch, solo. Drives apps through the accessibility tree (like a screen reader) rather than pixel-clicks: more reliable and safer. Safety policy gate, ADR-documented.',
     meta: 'Rust · KDE Plasma 6 / Wayland · open-source',
     proof: [['github.com/atassis/kde-mcp', 'https://github.com/atassis/kde-mcp']],
     caseLink: '/work/kde-mcp',
@@ -44,7 +44,7 @@ const projects = [
   },
   {
     title: 'Headless-GPU containerization for remote graphics',
-    body: 'A container that runs a full GPU graphics stack headless on modern Linux (Wayland, DRM/GBM, CUDA/DMA-BUF, seccomp isolation) — deliberately general: remote desktops, thin clients, and several isolated clients sharing one GPU, not just game streaming (its first use case). Built on current software (native Wayland) rather than the usual X11-era images.',
+    body: 'A container that runs a full GPU graphics stack headless on modern Linux (Wayland, DRM/GBM, CUDA/DMA-BUF, seccomp isolation). Deliberately general: remote desktops, thin clients, and several isolated clients sharing one GPU, not just game streaming (its first use case). Built on current software (native Wayland) rather than the usual X11-era images.',
     meta: 'Wayland · DRM/GBM · CUDA · seccomp · private',
     proof: [],
   },
@@ -145,8 +145,8 @@ const skills: [string, [string, string?][]][] = [
     </section>
 
     <section>
-      <h2 class="label">Skills — each links to its receipt</h2>
-      <p class="skills-hint muted">Not a self-rated cloud. Where a claim has a public proof, it links to it; where it doesn't, it's plain text — same honesty as the private tags above.</p>
+      <h2 class="label">Skills · each links to its receipt</h2>
+      <p class="skills-hint muted">Not a self-rated cloud. Where a claim has a public proof, it links to it; where it doesn't, it's plain text. Same honesty as the private tags above.</p>
       {skills.map(([group, items]) => (
         <div class="skillrow">
           <p class="skillrow__group">{group}</p>

@@ -20,26 +20,26 @@ const proof: [string, string?][] = [
   <main class="wrap">
     <p class="back"><a href="/work">&larr; work</a></p>
     <header class="lede">
-      <h1>kde-mcp &mdash; computer-use for the Linux desktop</h1>
-      <p class="muted">An MCP server that lets an agent actually drive a Linux (KDE Plasma 6 / Wayland) desktop &mdash; the kind of capability Anthropic ships for macOS and Windows, still rare on Linux. Built from scratch, solo, in Rust.</p>
+      <h1>kde-mcp: computer-use for the Linux desktop</h1>
+      <p class="muted">An MCP server that lets an agent actually drive a Linux (KDE Plasma 6 / Wayland) desktop. That&apos;s the kind of capability Anthropic ships for macOS and Windows, still rare on Linux. Built from scratch, solo, in Rust.</p>
     </header>
 
     <section class="lede">
       <h2 class="label">The bar before me</h2>
-      <p>Computer-use tooling is mature on macOS and Windows and thin on Linux &mdash; and what exists tends to lean on pixel-level screenshots and coordinate clicks, which are brittle and unsafe (a moved window or a re-theme breaks them). Wayland&apos;s security model makes naive screen-scraping harder still.</p>
+      <p>Computer-use tooling is mature on macOS and Windows, thin on Linux. What exists tends to lean on pixel-level screenshots and coordinate clicks, which are brittle and unsafe (a moved window or a re-theme breaks them). Wayland&apos;s security model makes naive screen-scraping harder still.</p>
     </section>
 
     <section class="lede">
       <h2 class="label">What I built</h2>
-      <p>kde-mcp drives applications through the accessibility tree &mdash; the same structured interface a screen reader uses &mdash; rather than by clicking pixels. The agent acts on named, typed elements, so actions are more reliable and far easier to reason about and gate. A safety policy layer sits in front of destructive actions, and the design decisions are written down as ADRs rather than living in my head.</p>
+      <p>kde-mcp drives applications through the accessibility tree (the same structured interface a screen reader uses), not by clicking pixels. The agent acts on named, typed elements, so actions are more reliable and far easier to reason about and gate. A safety policy layer sits in front of destructive actions. Design decisions are written down as ADRs, not left living in my head.</p>
     </section>
 
     <StatStrip stats={stats} />
 
     <section class="lede">
       <h2 class="label">Verify</h2>
-      <p class="muted small">It&apos;s open source &mdash; read the code, the ADRs, and the safety policy:</p>
-      <Verify explain="Public repository — the accessibility-tree approach, the safety gate, and the ADRs are all in the open." proof={proof} />
+      <p class="muted small">It&apos;s open source. Read the code, the ADRs, and the safety policy:</p>
+      <Verify explain="Public repository: the accessibility-tree approach, the safety gate, and the ADRs are all in the open." proof={proof} />
     </section>
 
     <nav class="casenav">

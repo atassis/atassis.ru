@@ -7,8 +7,8 @@ import A from '../components/A.astro';
 // [verify] only where a real receipt exists. No public proof → honest status tag, never a verify button.
 const crowns = [
   {
-    claim: 'Built a from-scratch on-device NPU inference engine (open kernels, Apache-2.0) — runs whole model graphs on the laptop NPU: a 16-model loader, 6 proven end-to-end. Showed by device trace it’s data-movement-bound (~93% of on-device time is overhead, not compute) and cut it there. When AMD’s toolchain broke under the load, I fixed its compiler, operators, driver, and LLVM backend rather than stop — 20+ fixes merged by AMD, one merged into upstream LLVM itself, 4 more in review.',
-    explain: 'The engine is public (Apache-2.0) — and so are the PRs: public, third-party-accepted evidence of the work it required. Every fix exists because my own build hit it — the compiler (mlir-aie), the operators (IRON), the runtime (mlir-air), and the LLVM backend (llvm-aie).',
+    claim: 'Built a from-scratch on-device NPU inference engine (open kernels, Apache-2.0). It runs whole model graphs on the laptop NPU: a 16-model loader, 6 proven end-to-end. Device trace showed it’s data-movement-bound (~93% of on-device time is overhead, not compute), so I cut it there. When AMD’s toolchain broke under the load, I fixed its compiler, operators, driver, and LLVM backend instead of stopping: 20+ fixes merged by AMD, one merged into upstream LLVM itself, 4 more in review.',
+    explain: 'The engine is public (Apache-2.0), and so are the PRs: public, third-party-accepted evidence of the work it required. Every fix exists because my own build hit it: the compiler (mlir-aie), the operators (IRON), the runtime (mlir-air), and the LLVM backend (llvm-aie).',
     proof: [
       ['xdna-engine (repo)', 'https://github.com/atassis/xdna-engine'],
       ['mlir-aie #3178', 'https://github.com/Xilinx/mlir-aie/pull/3178'],
@@ -20,7 +20,7 @@ const crowns = [
   },
   {
     claim: 'Fixes merged upstream in Zed and helm-diff; an open speculative-decoding PR to vLLM.',
-    explain: 'Zed & helm-diff read “Merged”; the vLLM PR is open — third parties accepted (or are reviewing) the code, not me.',
+    explain: 'Zed & helm-diff read “Merged”; the vLLM PR is still open. Third parties accepted the code, or are reviewing it: not me.',
     proof: [
       ['zed #13840', 'https://github.com/zed-industries/zed/pull/13840'],
       ['helm-diff #294', 'https://github.com/databus23/helm-diff/pull/294'],
@@ -37,7 +37,7 @@ const crowns = [
 ];
 
 const repos = [
-  ['kde-mcp', 'https://github.com/atassis/kde-mcp', 'computer-use MCP server for the Linux desktop (KDE/Wayland) — accessibility-tree-first, not pixel-clicks.', '/work/kde-mcp'],
+  ['kde-mcp', 'https://github.com/atassis/kde-mcp', 'computer-use MCP server for the Linux desktop (KDE/Wayland): accessibility-tree-first, not pixel-clicks.', '/work/kde-mcp'],
   ['tnl', 'https://github.com/atassis/tnl', 'self-hosted ngrok alternative: one-command reverse tunnels behind your own Caddy.'],
   ['evbridge', 'https://github.com/atassis/evbridge', 'evdev→Wayland input bridge for headless / nested compositors.'],
   ['run-script-webpack-plugin', 'https://github.com/atassis/run-script-webpack-plugin', 'in NestJS’ official HMR docs; ~600K npm downloads/mo.'],
@@ -52,20 +52,20 @@ const repos = [
     <header class="lede">
       <h1>Taimuraz Kaitmazov</h1>
       <p class="tagline">
-        I build deep, correct systems across unfamiliar stacks &mdash; AI platform, on-device NPU
+        I build deep, correct systems across unfamiliar stacks: AI platform, on-device NPU
         inference, backend, Linux internals.
       </p>
       <p class="muted lede-sub">
-        I go deep in unfamiliar, hard systems most engineers won&rsquo;t touch &mdash; and land results
+        I go deep in unfamiliar, hard systems most engineers won&rsquo;t touch, and land results
         their own experts merge: AMD took 20+ of my fixes into their NPU toolchain, one into LLVM
-        itself. AI does a lot of the typing; the discipline that keeps it correct &mdash; benchmarks,
-        gold-sets, byte-exact diffs &mdash; is how I stay right in a stack I didn&rsquo;t start in.
+        itself. AI does a lot of the typing. The discipline that keeps it correct (benchmarks,
+        gold-sets, byte-exact diffs) is how I stay right in a stack I didn&rsquo;t start in.
       </p>
     </header>
 
     <section class="grid">
       <h2 class="label">Lately</h2>
-      <p class="hint">Claims with a public receipt open to it &mdash; click <span class="kbdish">&#9656; verify</span>, or press <kbd>v</kbd> for all.</p>
+      <p class="hint">Claims with a public receipt open to it: click <span class="kbdish">&#9656; verify</span>, or press <kbd>v</kbd> for all.</p>
       {crowns.map((c) => (
         <div class="crown">
           <p class="crown__claim">{c.claim}</p>
