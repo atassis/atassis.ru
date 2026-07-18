@@ -6,9 +6,9 @@ import A from '../components/A.astro';
 const projects = [
   {
     title: 'On-device NPU inference engine — AMD Ryzen AI (XDNA2), Linux',
-    body: 'From-scratch engine running whole model graphs natively on the laptop NPU via the open MLIR-AIE / IRON stack — where the prior open-source high-water mark was a single unfused matmul at ~0.6% utilization and AMD’s own answer is a closed, fixed-catalog product. A 16-model / 11-architecture loader (BERT · Whisper/Parakeet/GigaAM · ViT/DINOv2/ResNet-18/CLIP · ESM-2), parity ~4e-3, six proven end-to-end on the NPU. Core: proved by device trace it’s data-movement-bound, then fused a 12-layer decode into one NPU dispatch (~33 host dispatches → 1 per token), weights + KV resident. −29% energy / ~half the package power vs CPU at equal accuracy (WER 0.117). When the toolchain broke under the load I fixed AMD’s compiler, operators, and LLVM backend rather than downscope — 11 merged, 5 more in review down to upstream LLVM. Public (Apache-2.0).',
+    body: 'From-scratch engine running whole model graphs natively on the laptop NPU via the open MLIR-AIE / IRON stack — where the prior open-source high-water mark was a single unfused matmul at ~0.6% utilization and AMD’s own answer is a closed, fixed-catalog product. A 16-model / 11-architecture loader (BERT · Whisper/Parakeet/GigaAM · ViT/DINOv2/ResNet-18/CLIP · ESM-2), parity ~4e-3, six proven end-to-end on the NPU. Core: proved by device trace it’s data-movement-bound, then fused a 12-layer decode into one NPU dispatch (~33 host dispatches → 1 per token), weights + KV resident. −29% energy / ~half the package power vs CPU at equal accuracy (WER 0.117). When the toolchain broke under the load I fixed AMD’s compiler, operators, and LLVM backend rather than downscope — 20+ merged, 5 more in review down to upstream LLVM. Public (Apache-2.0).',
     meta: 'MLIR-AIE · IRON · Peano · XRT · Rust · sole architect',
-    proof: [['mlir-aie #3178', 'https://github.com/Xilinx/mlir-aie/pull/3178'], ['amd/IRON #124', 'https://github.com/amd/IRON/pull/124'], ['llvm-aie #1054', 'https://github.com/Xilinx/llvm-aie/pull/1054']],
+    proof: [['mlir-aie #3178', 'https://github.com/Xilinx/mlir-aie/pull/3178'], ['amd/IRON #124', 'https://github.com/amd/IRON/pull/124'], ['llvm-aie #1059', 'https://github.com/Xilinx/llvm-aie/pull/1059']],
     caseLink: '/work/npu-engine',
   },
   {
@@ -68,7 +68,7 @@ const skills: [string, [string, string?][]][] = [
     ['vLLM on H100'],
     ['ClickHouse'],
     ['MLIR / compiler internals → mlir-aie #3178', 'https://github.com/Xilinx/mlir-aie/pull/3178'],
-    ['LLVM backend → llvm-aie #1054', 'https://github.com/Xilinx/llvm-aie/pull/1054'],
+    ['LLVM backend → llvm-aie #1059', 'https://github.com/Xilinx/llvm-aie/pull/1059'],
   ]],
   ['AI / ML', [
     ['on-device NPU inference → NPU engine', '/work/npu-engine'],
