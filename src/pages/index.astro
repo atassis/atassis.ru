@@ -7,7 +7,7 @@ import A from '../components/A.astro';
 // [verify] only where a real receipt exists. No public proof → honest status tag, never a verify button.
 const crowns = [
   {
-    claim: 'Built a from-scratch on-device NPU inference engine — runs whole model graphs on the laptop NPU (a 16-model loader, 6 proven end-to-end) where AMD’s own answer is a closed, fixed catalog, at ~half the CPU’s power. When AMD’s toolchain broke under the load, I fixed its compiler, operators, and LLVM backend rather than stop — 20+ fixes now merged by AMD, 5 more in review down to upstream LLVM itself.',
+    claim: 'Built a from-scratch on-device NPU inference engine (open kernels, Apache-2.0) — runs whole model graphs on the laptop NPU: a 16-model loader, 6 proven end-to-end. Showed by device trace it’s data-movement-bound (~93% of on-device time is overhead, not compute) and cut it there. When AMD’s toolchain broke under the load, I fixed its compiler, operators, driver, and LLVM backend rather than stop — 20+ fixes merged by AMD, one merged into upstream LLVM itself, 4 more in review.',
     explain: 'The engine is public (Apache-2.0) — and so are the PRs: public, third-party-accepted evidence of the work it required. Every fix exists because my own build hit it — the compiler (mlir-aie), the operators (IRON), the runtime (mlir-air), and the LLVM backend (llvm-aie).',
     proof: [
       ['xdna-engine (repo)', 'https://github.com/atassis/xdna-engine'],
@@ -56,8 +56,10 @@ const repos = [
         inference, backend, Linux internals.
       </p>
       <p class="muted lede-sub">
-        AI does a lot of the typing; my job is making sure it&rsquo;s actually right &mdash; verified
-        against real benchmarks, gold-sets, and byte-exact diffs, not just plausible output.
+        I go deep in unfamiliar, hard systems most engineers won&rsquo;t touch &mdash; and land results
+        their own experts merge: AMD took 20+ of my fixes into their NPU toolchain, one into LLVM
+        itself. AI does a lot of the typing; the discipline that keeps it correct &mdash; benchmarks,
+        gold-sets, byte-exact diffs &mdash; is how I stay right in a stack I didn&rsquo;t start in.
       </p>
     </header>
 

@@ -6,7 +6,7 @@ import A from '../components/A.astro';
 const projects = [
   {
     title: 'On-device NPU inference engine — AMD Ryzen AI (XDNA2), Linux',
-    body: 'From-scratch engine running whole model graphs natively on the laptop NPU via the open MLIR-AIE / IRON stack — where the prior open-source high-water mark was a single unfused matmul at ~0.6% utilization and AMD’s own answer is a closed, fixed-catalog product. A 16-model / 11-architecture loader (BERT · Whisper/Parakeet/GigaAM · ViT/DINOv2/ResNet-18/CLIP · ESM-2), parity ~4e-3, six proven end-to-end on the NPU. Core: proved by device trace it’s data-movement-bound, then fused a 12-layer decode into one NPU dispatch (~33 host dispatches → 1 per token), weights + KV resident. −29% energy / ~half the package power vs CPU at equal accuracy (WER 0.117). When the toolchain broke under the load I fixed AMD’s compiler, operators, and LLVM backend rather than downscope — 20+ merged, 5 more in review down to upstream LLVM. Public (Apache-2.0).',
+    body: 'From-scratch engine — open kernels included — running whole model graphs natively on the laptop NPU via the open MLIR-AIE / IRON stack; a general open engine of this kind (vs isolated example kernels and closed-binary turnkey runtimes) didn’t exist. A 16-model / 11-architecture loader (BERT · Whisper/Parakeet/GigaAM · ViT/DINOv2/ResNet-18/CLIP · ESM-2), parity ~4e-3, six proven end-to-end on the NPU. Core finding: proved by device trace it’s data-movement-bound — ~93% of on-device time is overhead, not compute — then fused a 12-layer decode into one NPU dispatch (~33 host dispatches → 1 per token), weights + KV resident. Lower package power at equal accuracy (WER 0.117) — an energy/offload win (RAPL package-level), not a latency claim. When the toolchain broke under the load I fixed AMD’s compiler, operators, driver, and LLVM backend rather than downscope — 20+ merged, one merged into upstream LLVM itself, 4 more in review. Public (Apache-2.0).',
     meta: 'MLIR-AIE · IRON · Peano · XRT · Rust · sole architect',
     proof: [['mlir-aie #3178', 'https://github.com/Xilinx/mlir-aie/pull/3178'], ['amd/IRON #124', 'https://github.com/amd/IRON/pull/124'], ['llvm-aie #1059', 'https://github.com/Xilinx/llvm-aie/pull/1059']],
     caseLink: '/work/npu-engine',
@@ -19,7 +19,7 @@ const projects = [
   },
   {
     title: 'Document-intelligence pipeline for accounting primaries',
-    body: 'Self-hosted OCR → LLM extraction of structured fields from Russian accounting primaries, PII kept on-premise (dots.ocr on H100 + an LLM extraction stage). Built a gold-set, a human-in-the-loop labeler and a scorer, then benchmarked OCR→LLM architectures on it — quantifying the privacy-vs-accuracy tradeoff to choose the production design on ground truth, not impression.',
+    body: 'Self-hosted OCR → LLM extraction of structured fields from Russian accounting primaries, PII kept on-premise (dots.ocr on H100 + an LLM extraction stage). Built a small-scale eval harness — a 6–9-doc hand-labeled gold-set plus ~30 model-labeled “silver” docs, a human-in-the-loop labeler and a scorer — then benchmarked OCR→LLM architectures on it, choosing the production design on ground truth rather than impression (privacy-vs-accuracy tradeoff quantified).',
     meta: 'vLLM · H100 · FastAPI · sole engineer · production',
     proof: [],
   },
@@ -40,6 +40,18 @@ const projects = [
     title: 'Three-language MCP server stack for 1С',
     body: 'Coordinated Go + Rust + TypeScript/Bun stack exposing 1С enterprise data to agents over MCP, behind a unified backend-neutral query abstraction with pluggable backends. 15+ MCP tools.',
     meta: 'Go · Rust · TS/Bun · sole architect · private',
+    proof: [],
+  },
+  {
+    title: 'Headless-GPU containerization for remote graphics',
+    body: 'A container that runs a full GPU graphics stack headless on modern Linux (Wayland, DRM/GBM, CUDA/DMA-BUF, seccomp isolation) — deliberately general: remote desktops, thin clients, and several isolated clients sharing one GPU, not just game streaming (its first use case). Built on current software (native Wayland) rather than the usual X11-era images.',
+    meta: 'Wayland · DRM/GBM · CUDA · seccomp · private',
+    proof: [],
+  },
+  {
+    title: 'Drug-interaction API audit (medical)',
+    body: 'Audited a production drug-interaction service against multiple authoritative sources and found it flagged only ~52.7% of the interactions it should have. A fast, decisive evaluation that resolved a task another team had left open for 2–3 months.',
+    meta: 'evaluation / audit · sole · unblocked a cross-team stall',
     proof: [],
   },
 ];

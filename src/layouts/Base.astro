@@ -15,8 +15,9 @@ import '@fontsource/ibm-plex-mono/600.css';
 interface Props {
   title?: string;
   register?: 'editorial' | 'technical';
+  noindex?: boolean;
 }
-const { title = 'atassis', register = 'editorial' } = Astro.props;
+const { title = 'atassis', register = 'editorial', noindex = false } = Astro.props;
 const variant = register === 'technical' ? 'd' : 'a';
 ---
 
@@ -25,6 +26,7 @@ const variant = register === 'technical' ? 'd' : 'a';
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
     <title>{title}</title>
     <script is:inline>
       try { if (localStorage.getItem('theme') === 'dark') document.documentElement.dataset.theme = 'dark'; } catch (e) { /* ignore */ }
