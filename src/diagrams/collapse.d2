@@ -1,0 +1,26 @@
+direction: right
+
+before: "" {
+  style.stroke-dash: 4
+  grid-columns: 3
+  "mlir-aie"
+  "mlir-air"
+  "iree-amd-aie"
+  "IRON"
+  "aie_api"
+  "aie-rt"
+  "bootgen"
+  "llvm-aie"
+  "llvm-project"
+  "XRT"
+  "xdna-driver"
+}
+
+after: "" {
+  style.stroke: transparent
+  compiler: "The compiler\nC2 above · C1 below"
+  backend: "The backend / ISA\nC1 · LLVM-fork wall"
+  runtime: "Runtime + driver\nC3 · GPL wall"
+}
+
+before -> after: "freeze\nC1 · C2 · C3"

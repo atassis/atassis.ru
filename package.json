@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "diagrams": "bun run scripts/gen-diagrams.ts"
   },
   "dependencies": {
     "@astrojs/preact": "^6",
@@ -20,6 +21,7 @@
     "tailwindcss": "^4"
   },
   "devDependencies": {
+    "@terrastruct/d2": "^0.1.33",
     "typescript": "^5"
   }
 }
