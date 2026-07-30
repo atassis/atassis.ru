@@ -10,8 +10,11 @@ const stats: [string, string][] = [
   ['array util while computing', '~31% of peak'],
   ['host dispatch / token', '~33 → 1'],
   ['kernel build', '~20 min → <1 min'],
-  ['upstream merged', '20+ PRs'],
+  ['upstream merged', '52 PRs'],
 ];
+
+const MERGED_Q = 'https://github.com/search?q=is%3Apr+author%3Aatassis+is%3Amerged+repo%3AXilinx%2Fmlir-aie+repo%3Aamd%2FIRON+repo%3AXilinx%2Fmlir-air+repo%3AXilinx%2Fllvm-aie+repo%3Aamd%2Fxdna-driver+repo%3Allvm%2Fllvm-project&type=pullrequests';
+const OPEN_Q = 'https://github.com/search?q=is%3Apr+author%3Aatassis+is%3Aopen+repo%3AXilinx%2Fmlir-aie+repo%3Aamd%2FIRON+repo%3AXilinx%2Fmlir-air+repo%3AXilinx%2Fllvm-aie+repo%3Aamd%2Fxdna-driver+repo%3AXilinx%2Faie_api&type=pullrequests';
 
 const proof: [string, string?][] = [
   ['mlir-aie #3178', 'https://github.com/Xilinx/mlir-aie/pull/3178'],
@@ -20,6 +23,8 @@ const proof: [string, string?][] = [
   ['mlir-aie #3216', 'https://github.com/Xilinx/mlir-aie/pull/3216'],
   ['mlir-aie #3221', 'https://github.com/Xilinx/mlir-aie/pull/3221'],
   ['mlir-aie #3257', 'https://github.com/Xilinx/mlir-aie/pull/3257'],
+  ['mlir-aie #3370', 'https://github.com/Xilinx/mlir-aie/pull/3370'],
+  ['mlir-aie #3375', 'https://github.com/Xilinx/mlir-aie/pull/3375'],
   ['amd/IRON #123', 'https://github.com/amd/IRON/pull/123'],
   ['amd/IRON #124', 'https://github.com/amd/IRON/pull/124'],
   ['mlir-air #1694', 'https://github.com/Xilinx/mlir-air/pull/1694'],
@@ -67,14 +72,15 @@ const proof: [string, string?][] = [
       <aside class="ledger" aria-label="Receipts">
         <div class="ledger__inner">
           <div class="ledger__label">receipts</div>
-          <p class="ledger__note">The engine is public (Apache-2.0, <A href="https://github.com/atassis/xdna-engine">github.com/atassis/xdna-engine</A>), and so is the toolchain work it required: every fix below reads <em>Merged</em> in AMD's own repos. Accepted by their maintainers, not by me.</p>
-          <div class="ledger__ok">&check; 20+ merged &middot; AMD / LLVM repos</div>
+          <p class="ledger__note">The engine is public (Apache-2.0, <A href="https://github.com/atassis/xdna-engine">github.com/atassis/xdna-engine</A>), and so is the toolchain work it required: every fix below reads <em>Merged</em> in AMD's own repos. Accepted by their maintainers, not by me. A sample — <A href={MERGED_Q}>run the query</A> for the current set.</p>
+          <div class="ledger__ok">&check; <A href={MERGED_Q}>52 merged</A> &middot; AMD / LLVM repos</div>
           <ul class="ledger__list">
             {proof.map(([name, url]) => (
               <li>{url ? <A href={url}>{name}</A> : <span>{name}</span>}</li>
             ))}
           </ul>
-          <div class="ledger__more">+ 4 in review: <A href="https://github.com/amd/IRON/pulls?q=is%3Apr+author%3Aatassis+is%3Aopen">IRON #134/#135</A>, <A href="https://github.com/Xilinx/llvm-aie/pull/1060">llvm-aie #1060</A>, <A href="https://github.com/vllm-project/vllm/pull/44698">vLLM #44698</A></div>
+          <div class="ledger__more">+ <A href={OPEN_Q}>24 open</A> across the stack, and <A href="https://github.com/vllm-project/vllm/pull/44698">vLLM #44698</A>.</div>
+          <div class="ledger__more">Credited by name in the last three <A href="https://github.com/Xilinx/mlir-aie/releases">mlir-aie releases</A> (v1.3.3, v1.3.4, v1.4.0) — six entries in the most recent.</div>
         </div>
       </aside>
     </div>

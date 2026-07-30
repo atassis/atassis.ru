@@ -7,13 +7,14 @@ import A from '../components/A.astro';
 // [verify] only where a real receipt exists. No public proof → honest status tag, never a verify button.
 const crowns = [
   {
-    claim: 'Built a from-scratch on-device NPU inference engine (open kernels, Apache-2.0). It runs model graphs on the laptop NPU: a 16-model parity loader, with ASR fully end-to-end and embeddings and vision also running on the device. Device trace showed it’s data-movement-bound (~93% of on-device time is overhead, not compute), so I cut it there. When AMD’s toolchain broke under the load, I fixed its compiler, operators, driver, and LLVM backend instead of stopping: 20+ fixes merged by AMD, one merged into upstream LLVM itself, 4 more in review.',
-    explain: 'The engine is public (Apache-2.0), and so are the PRs: public, third-party-accepted evidence of the work it required. Every fix exists because my own build hit it: the compiler (mlir-aie), the operators (IRON), the runtime (mlir-air), and the LLVM backend (llvm-aie).',
+    claim: 'Built a from-scratch on-device NPU inference engine (open kernels, Apache-2.0). It runs model graphs on the laptop NPU: a 16-model parity loader, with ASR fully end-to-end and embeddings and vision also running on the device. Device trace showed it’s data-movement-bound (~93% of on-device time is overhead, not compute), so I cut it there. When AMD’s toolchain broke under the load, I fixed its compiler, operators, driver, and LLVM backend instead of stopping: 52 fixes merged by AMD, three merged into upstream LLVM itself, 24 more in review.',
+    explain: 'The engine is public (Apache-2.0), and so are the PRs: public, third-party-accepted evidence of the work it required. Every fix exists because my own build hit it: the compiler (mlir-aie), the operators (IRON), the runtime (mlir-air), and the LLVM backend (llvm-aie). AMD’s last three mlir-aie releases credit me by name; the most recent names me in six entries.',
     proof: [
       ['xdna-engine (repo)', 'https://github.com/atassis/xdna-engine'],
       ['mlir-aie #3178', 'https://github.com/Xilinx/mlir-aie/pull/3178'],
       ['amd/IRON #124', 'https://github.com/amd/IRON/pull/124'],
       ['llvm-aie #1059', 'https://github.com/Xilinx/llvm-aie/pull/1059'],
+      ['mlir-aie releases', 'https://github.com/Xilinx/mlir-aie/releases'],
     ],
     status: null,
     caseLink: '/work/npu-engine',
@@ -57,7 +58,7 @@ const repos = [
       </p>
       <p class="muted lede-sub">
         I go deep in unfamiliar, hard systems most engineers won&rsquo;t touch, and land results
-        their own experts merge: AMD took 20+ of my fixes into their NPU toolchain, one into LLVM
+        their own experts merge: AMD took 52 of my fixes into their NPU toolchain, three into LLVM
         itself. AI does a lot of the typing. The discipline that keeps it correct (benchmarks,
         gold-sets, byte-exact diffs) is how I stay right in a stack I didn&rsquo;t start in.
       </p>
