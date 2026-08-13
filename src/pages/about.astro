@@ -3,7 +3,11 @@ import Base from '../layouts/Base.astro';
 import VariantSwitcher from '../components/VariantSwitcher';
 import A from '../components/A.astro';
 ---
-<Base title="About — Taimuraz Kaitmazov" register="editorial">
+<Base
+  title="About — Taimuraz Kaitmazov"
+  description="I build the thing, not sell it. Given an unfamiliar stack, I go all the way down until I understand it, then build something correct on top."
+  register="editorial"
+>
   <VariantSwitcher client:load />
   <main class="wrap">
     <header class="lede">

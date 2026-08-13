@@ -7,7 +7,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "diagrams": "bun run scripts/gen-diagrams.ts"
+    "diagrams": "bun run scripts/gen-diagrams.ts",
+    "og": "bash scripts/gen-og.sh"
   },
   "dependencies": {
     "@astrojs/preact": "^6",
@@ -21,6 +22,7 @@
     "tailwindcss": "^4"
   },
   "devDependencies": {
+    "@astrojs/sitemap": "^3.7.3",
     "@terrastruct/d2": "^0.1.33",
     "typescript": "^5"
   }

@@ -14,11 +14,23 @@ import '@fontsource/ibm-plex-mono/500.css';
 import '@fontsource/ibm-plex-mono/600.css';
 interface Props {
   title?: string;
+  description?: string;
   register?: 'editorial' | 'technical';
   noindex?: boolean;
+  ogType?: 'website' | 'article';
+  jsonLd?: Record<string, unknown>;
 }
-const { title = 'atassis', register = 'editorial', noindex = false } = Astro.props;
+const {
+  title = 'atassis',
+  description = 'Taimuraz Kaitmazov — AI platform & systems engineer. On-device NPU inference, AI platform, backend, Linux internals.',
+  register = 'editorial',
+  noindex = false,
+  ogType = 'website',
+  jsonLd,
+} = Astro.props;
 const variant = register === 'technical' ? 'd' : 'a';
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL('/og.png', Astro.site).href;
 ---
 
 <!doctype html>
@@ -28,6 +40,22 @@ const variant = register === 'technical' ? 'd' : 'a';
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
     <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content="Taimuraz Kaitmazov" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Taimuraz Kaitmazov — AI Platform & Systems Engineer" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
     <script is:inline>
       try { if (localStorage.getItem('theme') === 'dark') document.documentElement.dataset.theme = 'dark'; } catch (e) { /* ignore */ }
     </script>

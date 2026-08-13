@@ -4,6 +4,30 @@ import VariantSwitcher from '../components/VariantSwitcher';
 import Verify from '../components/Verify.astro';
 import A from '../components/A.astro';
 
+// Ties the `atassis` handle to the real name so search engines and LLMs resolve one entity, not two.
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Taimuraz Kaitmazov',
+  alternateName: 'atassis',
+  url: 'https://kaitmazov.com',
+  email: 'mailto:taimuraz@kaitmazov.com',
+  jobTitle: 'AI Platform & Systems Engineer',
+  description:
+    'AI platform and systems engineer: on-device NPU inference, AI platform, backend, Linux internals.',
+  knowsAbout: [
+    'AI platform engineering',
+    'On-device NPU inference',
+    'AMD XDNA2 / Ryzen AI',
+    'MLIR',
+    'Linux internals',
+    'Wayland',
+    'Rust',
+    'TypeScript',
+  ],
+  sameAs: ['https://github.com/atassis', 'https://www.linkedin.com/in/atassis/'],
+};
+
 // [verify] only where a real receipt exists. No public proof → honest status tag, never a verify button.
 const crowns = [
   {
@@ -46,7 +70,11 @@ const repos = [
 ];
 ---
 
-<Base title="Taimuraz Kaitmazov — AI Platform & Systems Engineer">
+<Base
+  title="Taimuraz Kaitmazov — AI Platform & Systems Engineer"
+  description="AI platform and systems engineer: on-device NPU inference, AI platform, backend, Linux internals. Deep work in unfamiliar stacks, with fixes merged upstream."
+  jsonLd={person}
+>
   <VariantSwitcher client:load />
 
   <main class="wrap">
