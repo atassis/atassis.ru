@@ -1,0 +1,5 @@
+# AI crawlers included — being quotable is the point.
+User-agent: *
+Allow: /
+
+Sitemap: https://kaitmazov.com/sitemap-index.xml
